@@ -26,58 +26,75 @@ npm install
 
 ---
 
-## 環境変数の設定
+## 初回セットアップ（環境構築）
 
-プロジェクトルートに `.env` ファイルを作成し、以下の環境変数を設定してください。
+```bash
+make setup
+```
 
-```env
-# Database
-DATABASE_URL=
+このコマンドで以下が自動実行されます：
+1. `.env.example` から `.env` を作成
+2. Docker・PostgreSQL・PgAdmin を起動
 
-# Authentication
-AUTH_SECRET=
-AUTH_URL=http://localhost:3000
+起動後、`.env` の環境変数をプロジェクト関係者に確認して修正してください。
+
+---
+
+## Docker・PostgreSQL・PgAdmin の起動（2回目以降）
+
+```bash
+make up
+```
+
+このコマンドで以下が起動します：
+- Next.js アプリケーション（http://localhost:3000）
+- PostgreSQL（localhost:5433）
+- PgAdmin 4（http://localhost:5050）
+
+停止する場合：
+
+```bash
+make down
 ```
 
 ---
 
-## Docker(PostgreSQL)の起動
+## Prisma マイグレーション（初回のみ）
 
 ```bash
-docker compose up -d
-```
-
-停止
-
-```bash
-docker compose down
+make migrate
 ```
 
 ---
 
-## Prisma
+## よく使うコマンド
 
-マイグレーション
-
-```bash
-npx prisma migrate dev
-```
-
-Prisma Client生成
-
-```bash
-npx prisma generate
-```
-
-Prisma Studio起動
-
-```bash
-npx prisma studio
-```
+| コマンド | 説明 |
+|---------|------|
+| `make up` | Docker 起動（app + PostgreSQL + PgAdmin） |
+| `make down` | Docker 停止 |
+| `make migrate` | Prisma マイグレーション実行 |
+| `make db` | PostgreSQL に接続（psql） |
+| `make studio` | Prisma Studio 起動 |
+| `make logs` | Docker ログ表示 |
 
 ---
 
-## ローカルサーバーの起動
+## PgAdmin 4 でデータベースを確認
+
+1. http://localhost:5050 にアクセス
+2. ログイン：`.env` の `PGADMIN_EMAIL` / `PGADMIN_PASSWORD`
+3. サーバー登録：
+   - Hostname: `postgres`
+   - Port: `5432`
+   - Username: `.env` の `POSTGRES_USER`
+   - Password: `.env` の `POSTGRES_PASSWORD`
+
+---
+
+## ローカルサーバーの起動（代替方法）
+
+通常は `make up` で起動しますが、Next.js だけをローカルで起動したい場合：
 
 ```bash
 npm run dev
@@ -147,34 +164,96 @@ http://localhost:3000
 
 # プロジェクト構成
 
-本プロジェクトは、保守性・拡張性を意識し、**Feature First** のアーキテクチャを採用しています。
+このプロジェクトは、スケーラビリティとメンテナンス性を確保するために **bulletproof-react** のアーキテクチャを採用しています。ファイルの種類ではなく機能（feature）ごとにファイルを整理することを基本思想としています。
+
+## ディレクトリ構成
 
 ```
 src/
-├── app/                    # App Router
-│   ├── (auth)              # 認証関連
-│   ├── (dashboard)         # ログイン後画面
-│   ├── api/                # Route Handlers(API)
-│   └── layout.tsx
-│
-├── components/             # 共通UI
-│
-├── features/
-│   ├── auth/
-│   ├── error-log/
-│   ├── tag/
-│   └── user/
-│
-├── hooks/
-│
-├── lib/
-│   ├── auth/
-│   ├── prisma/
-│   └── validations/
-│
-├── constants/
-│
-├── types/
-│
-└── utils/
+├── app/              # アプリケーション層（レイアウト、ページ、Route Handler）
+├── components/       # 共有のUIコンポーネント（例: Button, Modal）
+├── features/         # 機能ベースのモジュール（例: 認証、エラーログ）
+├── config/           # タグ一覧など、アプリ全体で使う定数
+├── hooks/            # 共有のカスタムフック
+├── lib/              # 設定済みのライブラリ（例: Prisma, Auth.js）
+├── types/            # 共有のTypeScript型定義
+└── utils/            # 共有の便利関数
 ```
+
+## ディレクトリの役割
+
+### `src/app/`
+Next.js の App Router で使用するレイアウト・ページ・Route Handlers を配置します。
+
+**例：**
+```
+app/
+├── (auth)/          # 認証関連ページ（ログイン、サインアップ）
+├── (dashboard)/     # 認証後のメインページ
+├── api/             # Route Handlers（APIエンドポイント）
+└── layout.tsx
+```
+
+### `src/components/`
+複数の機能で再利用される UI コンポーネントを配置します。
+
+**例：** Button, Modal, Card, Header, Footer など
+
+### `src/features/`
+特定の機能に関連するコードを機能ごとにディレクトリで管理します。
+- API ロジック
+- ビジネスロジック
+- UI コンポーネント（機能特有）
+- TypeScript 型定義（機能特有）
+
+**例：**
+```
+features/
+├── auth/            # 認証機能
+├── error-log/       # エラーログ機能
+├── tag/             # タグ管理機能
+└── user/            # ユーザー管理機能
+```
+
+### `src/config/`
+アプリケーション全体で使用される定数を配置します。
+
+**例：** タグ一覧、API のベース URL、設定値 など
+
+### `src/hooks/`
+複数の機能で再利用されるカスタムフックを配置します。
+
+**例：** useAuth, useFetch, useLocalStorage など
+
+### `src/lib/`
+設定済みのライブラリやユーティリティを配置します。
+
+**例：**
+```
+lib/
+├── auth.ts          # Auth.js の設定
+├── prisma.ts        # Prisma Client
+└── db.ts            # データベース関連ユーティリティ
+```
+
+### `src/types/`
+複数の機能で使用される共有の TypeScript 型定義を配置します。
+
+**例：** User, ErrorLog, Tag など
+
+### `src/utils/`
+複数の機能で再利用される便利関数を配置します。
+
+**例：** 日付フォーマット、文字列加工、バリデーション など
+
+## 主要な原則
+
+### 機能第一（Feature-First）
+特定の機能に関連するコードは `src/features` 内の専用ディレクトリにまとめて配置します。
+
+### 共有とローカルの分離
+- **複数機能で再利用**: `components/`, `hooks/`, `lib/`, `utils/` に配置
+- **単一機能のみ**: その機能の `features/` ディレクトリ内に配置
+
+### 疎結合
+各機能は可能な限り独立しているべきです。機能間の直接インポート（例: `features/auth` から `features/error-log` をインポート）は避けてください。
