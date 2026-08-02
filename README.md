@@ -268,7 +268,7 @@ lib/
 - 複数のタグに対して、複数のエラーログにつけることができる。 ​(多対多)
 - エラーログテーブルとタグテーブルは、​多対多のため、中間テーブルを設ける(ErrorLogTagテーブル)
 
-(public/エンティティ.png)
+<img width="1200" height="800" alt="エンティティ.png" src="/public/エンティティ.png" />
 
 ## ER図
-(public/ER図.png)
+<img width="1200" height="800" alt="ER図.png" src="/public/ER図.png" />
