@@ -5,5 +5,58 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+
+model Users {
+  id                  String             @id @default(uuid())
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  userName            String             @db.VarChar(255)
+  profileIcon         String             @db.Text
+  xUrl                String             @db.Text
+  instagramUrl        String             @db.Text
+  githubUrl           String             @db.Text
+  email               String             @db.VarChar(255)
+  password_hash       String             @db.VarChar(255)
+  errorLog            ErrorLog[]
+}
+
+enum ResolutionStatus {
+  RESOLVED   
+  UNRESOLVED
+}
+
+
+model ErrorLog {
+  id                     String            @id @default(uuid())
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @updatedAt @map("updated_at")
+  title                  String            @db.VarChar(255)
+  status                 ResolutionStatus  @default(UNRESOLVED)          
+  os                     String            @db.VarChar(255)
+  framework_version      String            @db.VarChar(255)
+  framework              String            @db.VarChar(255)
+  solution               String?           @db.Text
+  cause                  String            @db.Text
+  error_message          String            @db.Text
+  userId                 String            
+  users                  Users             @relation(fields: [userId], references: [id])
+  errorLogTag            ErrorLogTag[]
+}
+
+model Tag {
+  id                     String            @id @default(uuid())           
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @updatedAt @map("updated_at")
+  tag_name               String            @db.VarChar(100)
+  errorLogTag            ErrorLogTag[]     
+}
+
+model ErrorLogTag {
+  id                     String           @id @default(uuid())
+  errorLogId             String           
+  tagId                  String                  
+  errorlog               ErrorLog         @relation(fields: [errorLogId], references: [id])
+  tag                    Tag              @relation(fields: [tagId], references: [id])
 }
