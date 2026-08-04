@@ -8,7 +8,7 @@ datasource db {
 }
 
 
-model Users {
+model User {
   id                  String             @id @default(uuid())
   createdAt           DateTime           @default(now()) @map("created_at")
   updatedAt           DateTime           @updatedAt @map("updated_at")
@@ -41,7 +41,7 @@ model ErrorLog {
   cause                  String            @db.Text
   error_message          String            @db.Text
   userId                 String            
-  users                  Users             @relation(fields: [userId], references: [id])
+  user                   User             @relation(fields: [userId], references: [id])
   errorLogTag            ErrorLogTag[]
 }
 
