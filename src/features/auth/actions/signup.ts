@@ -2,16 +2,16 @@
 
 import z from "zod";
 import { signUpSchema } from "@/features/auth/schemas/signUpSchema";
-import { ActionResult } from "next/dist/server/app-render/types";
 import { getUserByEmail } from "../repositories/user";
 import { prisma } from "@/utils/prisma";
+import { ActionsResult } from "./actionsResult";
 import bcrypt from "bcrypt";
 
 // signup全体の処理の流れ
 
 export const signUp = async (
   values: z.infer<typeof signUpSchema>,
-): Promise<ActionResult> => {
+): Promise<ActionsResult> => {
   const validatedFields = signUpSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -23,12 +23,12 @@ export const signUp = async (
     };
   }
 
-  const { email, password_hash, userName } = validatedFields.data;
+  const { email, password, userName } = validatedFields.data;
 
   try {
-    const hashedPassword = await bcrypt.hash(password_hash, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const existingUser = await getUserByEmail(email);
-    const db = prisma;
+
 
     if (existingUser) {
       return {
@@ -38,7 +38,7 @@ export const signUp = async (
         },
       };
     }
-    await db.user.create({
+    await prisma.user.create({
       data: {
         userName: userName,
         email: email,
