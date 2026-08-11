@@ -132,14 +132,13 @@ http://localhost:3000
 
 - ユーザー登録     /signup
 - ログイン        /login
+- ユーザーアカウント /user-account 
 - エラーログ登録.  /new-errorLog
 - エラーログ一覧.  /errorLog-list
 - エラーログ詳細.  /detail-errorLog
 - エラーログ編集.  /errorLog-edit
 - エラーログ削除
 - キーワード検索
-- タグ管理
-- ユーザーごとのログ管理
 
 ---
 
@@ -257,6 +256,31 @@ lib/
 
 ### 疎結合
 各機能は可能な限り独立しているべきです。機能間の直接インポート（例: `features/auth` から `features/error-log` をインポート）は避けてください。
+
+### api
+```
+/src/app/
+  (public)  # 未ログインユーザー向け
+
+    errorlog-list/  # エラーログ一覧
+      route.ts  # GET: 全ユーザーのエラーログ情報を取得
+      
+      errorlog-list/[id]/  # エラーログ詳細
+      route.ts  # GET: 特定のエラーログ詳細情報を取得
+
+      user-account/ # ユーザーアカウント
+      route.ts # GET: ユーザーアカウント情報を取得
+               # PUT: ユーザーアカウント情報を更新(編集可)
+
+  (admin)  # ログインユーザー向け
+
+    user-account/  # ユーザーアカウント
+      route.ts  # GET: アカウント情報取得, PUT: 更新
+    errorlog  # エラーログ登録フォーム
+      route.ts  # POST: 新規投稿
+    errorlog-edit/  # エラーログ編集
+      route.ts  # PUT: 更新、DELETE: 削除
+```
 
 
 ## DB設計
