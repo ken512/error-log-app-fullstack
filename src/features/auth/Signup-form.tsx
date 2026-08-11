@@ -5,7 +5,7 @@ import { signUp } from "./actions/signup";
 import { SignUpInput } from "./schemas/signUpSchema";
 import { AuthFormModeProps } from "@/types/auth";
 import { signUpFields } from "@/config/auth/authFields";
-import { FormInput } from "@/hooks/input/formInput";
+import { FormInput } from "@/components/input/formInput";
 
 export const SignUpForm = ({ mode }: AuthFormModeProps) => {
   const {
@@ -19,11 +19,14 @@ export const SignUpForm = ({ mode }: AuthFormModeProps) => {
 
     if (!result.isSuccess) {
       return result.error.message;
-    };
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 bg-[#333333] p-[30px] rounded-xl"
+    >
       {signUpFields.map((field) => (
         <FormInput
           key={field.name}
@@ -33,7 +36,10 @@ export const SignUpForm = ({ mode }: AuthFormModeProps) => {
           error={errors[field.name]?.message}
         />
       ))}
-      <button type="submit">
+      <button
+        type="submit"
+        className="border-none rounded-md text-black bg-white p-3 mt-[50px] mx-[120px] hover:bg-gray-300"
+      >
         {mode === "signup" ? "新規登録" : "ログイン"}
       </button>
     </form>

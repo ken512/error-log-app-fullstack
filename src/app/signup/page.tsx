@@ -1,13 +1,11 @@
-
 import { SignUpForm } from "@/features/auth/Signup-form";
 
 const SignUpPage = () => {
-
   return (
-    <>
-    <SignUpForm mode="signup"/>
-    </>
-  )
+      <div className="mt-[50px] max-w-[450px] mx-auto">
+        <SignUpForm mode="signup" />
+      </div>
+  );
 };
 
 export default SignUpPage;
