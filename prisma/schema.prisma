@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -13,10 +13,10 @@ model User {
   createdAt           DateTime           @default(now()) @map("created_at")
   updatedAt           DateTime           @updatedAt @map("updated_at")
   userName            String             @db.VarChar(255)
-  profileIcon         String             @db.Text
-  xUrl                String             @db.Text
-  instagramUrl        String             @db.Text
-  githubUrl           String             @db.Text
+  profileIcon         String             @default("")
+  xUrl                String             @default("")
+  instagramUrl        String             @default("")
+  githubUrl           String             @default("")
   email               String             @db.VarChar(255)
   password_hash       String             @db.VarChar(255)
   errorLog            ErrorLog[]
@@ -59,4 +59,6 @@ model ErrorLogTag {
   tagId                  String                  
   errorlog               ErrorLog         @relation(fields: [errorLogId], references: [id])
   tag                    Tag              @relation(fields: [tagId], references: [id])
+
+  @@unique([errorLogId, tagId])
 }

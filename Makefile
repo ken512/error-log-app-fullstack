@@ -27,7 +27,12 @@ db:
 	docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
 install:
-	docker compose exec app npm install
+	docker compose exec app npm add next-auth@beta
+
+install-auth:
+	docker compose exec app npm next-auth@beta	
+setup-auth:
+	@echo "AUTH_SECRET=$$(openssl rand -base64 33)" >> .env	
 
 migrate:
 	docker compose exec app npx prisma migrate dev
