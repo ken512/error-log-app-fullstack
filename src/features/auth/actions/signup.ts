@@ -3,7 +3,7 @@
 import z from "zod";
 import { signUpSchema } from "@/features/auth/schemas/signUpSchema";
 import { getUserByEmail } from "../repositories/user";
-import { prisma } from "@/utils/prisma";
+import { prisma } from "@/lib/prisma";
 import { ActionsResult } from "./actionsResult";
 import bcrypt from "bcrypt";
 

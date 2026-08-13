@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/prisma";
+import { prisma } from "@/lib/prisma";
 
 // 認証で使うためのDBアクセス（操作）
 // メールアドレスを通じてユーザーデータを取得するメソッド
