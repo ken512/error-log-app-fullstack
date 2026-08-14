@@ -17,12 +17,14 @@ export const FormInput = ({label, type, registration, error, shoPasswordToggle}:
 
 const baseLabel = "text-md mt-[50px]"
 const baseInput = "w-[100%] p-[10px] border-none rounded-xl text-sm bg-white text-black focus:outline-blue-500";
+const baseErrorInput = "w-[100%] p-[10px] border-none rounded-xl bg-[#3a2222] text-[#ff4444] focus:outline-[#ff4444]"
 
   return (
     <>
+
       <label className={baseLabel}>{label}</label>
-      <input type={type } {...registration} className={baseInput}/>
-      { Boolean(error) && <p>{error}</p>}
+      <input type={type } {...registration} className={`${error ? baseErrorInput : baseInput}`}/>
+      { Boolean(error) && <p className="text-[#ff4444] text-sm mt-1">{error}</p>}
     </>
   )
 }

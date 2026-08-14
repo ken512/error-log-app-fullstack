@@ -187,7 +187,7 @@ Next.js の App Router で使用するレイアウト・ページ・Route Handle
 **例：**
 ```
 app/
-├── (auth)/          # 認証関連ページ（ログイン、サインアップ）
+├── (auth)/          # 認証関連ページ（サインイン、サインアップ）
 ├── (dashboard)/     # 認証後のメインページ
 ├── api/             # Route Handlers（APIエンドポイント）
 └── layout.tsx
