@@ -9,9 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.11.3",
     "@hookform/resolvers": "^5.4.0",
     "@prisma/adapter-pg": "^7.9.1",
-    "@prisma/client": "^7.8.0",
+    "@prisma/client": "^7.9.1",
     "bcrypt": "^6.0.0",
     "jotai": "^2.20.2",
     "next": "15.5.18",
@@ -34,7 +35,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.18",
-    "prisma": "^7.8.0",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

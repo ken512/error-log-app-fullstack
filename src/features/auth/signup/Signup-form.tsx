@@ -1,18 +1,20 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signUp } from "./actions/signup";
-import { SignUpInput } from "./schemas/signUpSchema";
+import { signUp } from "../actions/signup";
+import { SignUpInput } from "../schemas/signUpSchema";
+import { signUpSchema } from "../schemas/signUpSchema";
 import { AuthFormModeProps } from "@/types/auth";
 import { signUpFields } from "@/config/auth/authFields";
 import { FormInput } from "@/components/input/formInput";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const SignUpForm = ({ mode }: AuthFormModeProps) => {
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpInput>({ mode: "onBlur" });
+  } = useForm<SignUpInput>({resolver: zodResolver(signUpSchema)});
 
   const onSubmit = async (data: SignUpInput) => {
     const result = await signUp(data);
