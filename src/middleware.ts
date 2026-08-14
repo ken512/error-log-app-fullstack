@@ -1,10 +1,11 @@
-import { auth } from "./utils/auth/auth";
+import NextAuth from "next-auth";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT, publicRoutes } from "./utils/auth/routes";
+import authConfig from "./utils/auth/auth.config";
 
 // 全てのルートがmiddlewareを呼び出せるようにする。
 // 認証されたルート、ログイン用のルート、プライベートルート、パブリックルートの両方でミドルウェアを呼び出す時に活用。
 // matcherに設定するバスはミドルウェア(authメソッド)を呼び出したいものを指定。
-
+const { auth } = NextAuth(authConfig)
 export default auth((req) => {
   const { nextUrl} = req;
   const isLoggedIn = !!req.auth;
@@ -27,11 +28,11 @@ export default auth((req) => {
     return null;
   }
   if(!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/signup", nextUrl));
+    return Response.redirect(new URL("/login", nextUrl));
   }
   return null;
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

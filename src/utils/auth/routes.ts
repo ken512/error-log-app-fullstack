@@ -3,7 +3,7 @@
 export const publicRoutes: string[] = [];
 
 // ログインしているユーザーをルートディレクトリにリダイレクトする。
-export const authRoutes: string[] = ["/signup", "signin"];
+export const authRoutes: string[] = ["/signup", "/login"];
 
 // api認証に使用されるルートのプレフィックス
 export const apiAuthPrefix: string = "/api/auth";

@@ -1,9 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signUp } from "./actions/signup";
-import { SignUpInput } from "./schemas/signUpSchema";
-import { signUpSchema } from "./schemas/signUpSchema";
+import { signUp } from "../actions/signup";
+import { SignUpInput } from "../schemas/signUpSchema";
+import { signUpSchema } from "../schemas/signUpSchema";
 import { AuthFormModeProps } from "@/types/auth";
 import { signUpFields } from "@/config/auth/authFields";
 import { FormInput } from "@/components/input/formInput";

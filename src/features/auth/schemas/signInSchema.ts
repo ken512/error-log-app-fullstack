@@ -8,3 +8,5 @@ export const signInSchema = z.object({
     .min(1, "パスワードは必須入力です")
     .min(8, "パスワードは8文字以上で入力してください"),
 });
+
+export type SigninInput = z.infer<typeof signInSchema>
