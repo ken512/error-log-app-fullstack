@@ -8,7 +8,6 @@ export const HeaderAuth = async () => {
 
   return (
     <>
-      <Link href="/">error_log</Link>
       {session?.user ? (
         <div className="flex items-center gap-4">
           <span className="text-white text-md hover:text-gray-300">
