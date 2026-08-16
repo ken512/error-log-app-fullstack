@@ -1,4 +1,4 @@
 
-export type AuthFormModeProps = {
+export type AuthModeProps = {
   mode: "signup" | "login";
 };

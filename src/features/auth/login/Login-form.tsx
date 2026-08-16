@@ -5,11 +5,11 @@ import { SigninInput } from "../schemas/signInSchema";
 import { signIn } from "../actions/signin";
 import { signInSchema } from "../schemas/signInSchema";
 import { loginFields } from "@/config/auth/authFields";
-import { AuthFormModeProps } from "@/types/auth";
+import { AuthModeProps } from "@/types/auth";
 import { FormInput } from "@/components/input/formInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const SignInForm = ({mode}: AuthFormModeProps ) => {
+export const SignInForm = ({mode}: AuthModeProps ) => {
   const {
     register,
     handleSubmit,
