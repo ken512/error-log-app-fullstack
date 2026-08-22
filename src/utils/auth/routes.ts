@@ -1,6 +1,8 @@
 
 // 認証を必要としない、誰でもアクセスできる公開ページ
-export const publicRoutes: string[] = [];
+export const publicRoutes: string[] = [
+  "/api/public/user-account",
+];
 
 // ログインしているユーザーをルートディレクトリにリダイレクトする。
 export const authRoutes: string[] = ["/signup", "/login"];
