@@ -274,12 +274,10 @@ lib/
 
   (admin)  # ログインユーザー向け
 
-    user-account/  # ユーザーアカウント
-      route.ts  # GET: アカウント情報取得, PUT: 更新
     errorlog  # エラーログ登録フォーム
       route.ts  # POST: 新規投稿
     errorlog-edit/  # エラーログ編集
-      route.ts  # PUT: 更新、DELETE: 削除
+      route.ts # GET: 取得, # PUT: 更新、DELETE: 削除
 ```
 
 
