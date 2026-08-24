@@ -78,7 +78,7 @@ export const PUT = async (req: NextRequest) => {
       WHERE "id" = ${userId}
     `;
 
-    if (userData === 0) {
+    if (!userData || userData === 0) {
       return NextResponse.json(
         { message: "更新対象のユーザーが見つかりません。" },
         { status: 404 },
@@ -88,6 +88,7 @@ export const PUT = async (req: NextRequest) => {
     const response = {
       status: "OK",
       message: "ユーザーアカウント情報を更新しました。",
+      userData: userData,
     };
 
     return NextResponse.json(response, { status: 200 });
