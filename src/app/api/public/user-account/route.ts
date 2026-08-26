@@ -1,21 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/generated/prisma";
-import { auth } from "@/utils/auth/auth";
+import { getCurrentUser } from "@/lib/auth";
 
 export const GET = async () => {
   // 特定のユーザー情報である、userName, Icon画像、xUrl, instagramUrl,githubUrl, threadsUrl, githubUrl,のユーザー情報を取得、更新
 
-
-  const session = await auth();
-
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "認証が必要です。" }, { status: 401 });
-  }
-
-  const userId = session.user.id;
-
   try {
+    const userId = await getCurrentUser();
     const userData = await prisma.$queryRaw<User[]>`SELECT "id", "userName",
         "profileIcon",
         "xUrl",
@@ -48,23 +40,24 @@ export const GET = async () => {
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error(error);
-    if (error instanceof Error)
-      return NextResponse.json({ status: error.message }, { status: 500 });
+
+    if (error instanceof Error && error.message === "UNAUTHORIZED") {
+      return NextResponse.json(
+        { message: "認証が必要です。" },
+        { status: 401 },
+      );
+    }
+    const errorMessage =
+      error instanceof Error ? error.message : "サーバーエラー";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 };
 
 export const PUT = async (req: NextRequest) => {
-  const session = await auth();
-
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ message: "認証が必要です。" }, { status: 401 });
-  }
-
-  const userId = session.user.id;
-  const body = await req.json();
-  const { userName, profileIcon, xUrl, threadsUrl, githubUrl } = body;
-
   try {
+    const userId = await getCurrentUser();
+    const body = await req.json();
+    const { userName, profileIcon, xUrl, threadsUrl, githubUrl } = body;
     // SETで、対象の行のみを更新
     const userData = await prisma.$executeRaw`
       UPDATE "User"
@@ -94,6 +87,12 @@ export const PUT = async (req: NextRequest) => {
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error(error);
+    if (error instanceof Error && error.message === "UNAUTHORIZED") {
+      return NextResponse.json(
+        { message: "認証が必要です。" },
+        { status: 401 },
+      );
+    }
     const errorMessage =
       error instanceof Error ? error.message : "サーバーエラー";
     return NextResponse.json({ message: errorMessage }, { status: 500 });
