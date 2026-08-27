@@ -50,7 +50,7 @@ model Tag {
   id                     String            @id @default(uuid())           
   createdAt              DateTime          @default(now()) @map("created_at")
   updatedAt              DateTime          @updatedAt @map("updated_at")
-  tag_name               String            @db.VarChar(100)
+  tag_name               String            @unique @db.VarChar(100)
   errorLogTag            ErrorLogTag[]     
 }
 
