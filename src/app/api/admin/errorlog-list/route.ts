@@ -6,19 +6,31 @@ import { getCurrentUser } from "@/lib/auth";
 export const GET = async () => {
   try {
     const userId = await getCurrentUser();
+
     const errorLogListData = await prisma.$queryRaw<ErrorLog[]>
-    `SELECT "id",
-        "title",
-        "status",
-        "os",
-        "framework",
-        "framework_version",
-        "solution",
-        "cause",
-        "error_message"
-        FROM "ErrorLog"
-        WHERE "userId" = ${userId}
-        ORDER BY "created_at" DESC`;
+    `SELECT el."id",
+        el."title",
+        el."status",
+
+        COALESCE(
+        (
+        SELECT jsonb_agg(
+        jsonb_build_object(
+        'id', t."id",
+        'tag_name', t."tag_name"
+          )
+        )
+          FROM "ErrorLogTag" elt
+          INNER JOIN "Tag" t
+          ON t."id" = elt."tagId"
+          WHERE elt."errorLogId" = el."id"
+        ),
+        '[]'::jsonb
+        ) AS "tags"
+        
+        FROM "ErrorLog" el
+        WHERE el."userId" = ${userId}
+        ORDER BY el."created_at" DESC`;
 
     if (!errorLogListData || errorLogListData.length === 0) {
       return NextResponse.json(
