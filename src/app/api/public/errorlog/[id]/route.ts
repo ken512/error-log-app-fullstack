@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
-export const GET = async () => {
-
+export const GET = async (_rea: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const userId = await getCurrentUser();
+    const { id: errorLogId } = await params;
 
-    const detailErrorLogData = await prisma.$queryRaw<ErrorLog[]>
-    `SELECT 
+    console.log
+
+    const detailErrorLogData = await prisma.$queryRaw<ErrorLog[]>`SELECT 
     el."id",
     el."title",
     el."status",
@@ -37,30 +38,36 @@ export const GET = async () => {
     ) AS "tags"
     
     FROM "ErrorLog" el
-    WHERE el."userId" = ${userId}
+    WHERE el."id" = ${errorLogId}
+      AND el."userId" = ${userId}
     `;
 
-    if(!detailErrorLogData) {
-    return NextResponse.json({message: "エラーログの情報がありません。"}, {status: 404});
-    };
+    const detailErrorLog = detailErrorLogData[0];
+
+    if (!detailErrorLog) {
+      return NextResponse.json(
+        { message: "エラーログの情報がありません。" },
+        { status: 404 },
+      );
+    }
 
     const response = {
       status: "OK",
-      detailErrorLog: detailErrorLogData
+      detailErrorLog: detailErrorLog,
     };
 
-    return NextResponse.json(response, {status: 200});
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error(error);
 
-    if( error instanceof Error && error.message === "UNAUTHORIZED") {
+    if (error instanceof Error && error.message === "UNAUTHORIZED") {
       return NextResponse.json(
-        {message: "認証が必要です。"},
-        {status: 401}
+        { message: "認証が必要です。" },
+        { status: 401 },
       );
-    };
+    }
     const errorMessage =
       error instanceof Error ? error.message : "サーバーエラー";
-      return NextResponse.json({message: errorMessage}, {status: 500});
-  };
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
+  }
 };

@@ -3,11 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { Tag } from "@/generated/prisma";
 
-export type CreatedTag = {
-  id: string;
-  tag_name: string;
-};
+type CreatedTag = Pick<Tag, "id" | "tag_name">;
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -61,7 +59,7 @@ export const POST = async (req: NextRequest) => {
 
     // タグを登録し、ErrorLogTagで関連付ける
     const createdTags: CreatedTag[] = [];
-    for(const tagName of tags) {
+    for(const TagName of tags) {
       const tagId = uuidv4();
 
       const [tag] = await tx.$queryRaw<CreatedTag[]>`
@@ -69,10 +67,11 @@ export const POST = async (req: NextRequest) => {
       "id",
       "tag_name",
       "created_at",
-      "updated_at")
+      "updated_at"
+      )
       VALUES (
       ${tagId},
-      ${tagName},
+      ${TagName},
       NOW(),
       NOW()
       )
@@ -87,7 +86,8 @@ export const POST = async (req: NextRequest) => {
       INSERT INTO "ErrorLogTag" (
       "id",
       "errorLogId",
-      "tagId")
+      "tagId"
+      )
       VALUES (
       ${errorLogTagId},
       ${createdErrorLog.id},
