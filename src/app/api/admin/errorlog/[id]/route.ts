@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 
 type UpdatedTag = Pick<Tag, "id" | "tag_name">;
 
-export const PUT = async (req: NextRequest,{params}: {params: Promise<{id: string}>}) => {
-
+export const PUT = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) => {
   try {
     const { id: errorLogId } = await params;
     const userId = await getCurrentUser();
@@ -26,22 +28,19 @@ export const PUT = async (req: NextRequest,{params}: {params: Promise<{id: strin
       tags,
     } = body;
 
-  const updatedErrorLog = await prisma.$transaction(async (tx) => {
-
-    // 本人のErrorLogIdか確認
-  const errorLogs = await tx.$queryRaw<{ id: string }[]>
-  `SELECT "id"
+    const updatedErrorLog = await prisma.$transaction(async (tx) => {
+      // 本人のErrorLogIdか確認
+      const errorLogs = await tx.$queryRaw<{ id: string }[]>`SELECT "id"
   FROM "ErrorLog"
   WHERE "id" = ${errorLogId}
     AND "userId" = ${userId}`;
 
-    if(errorLogs.length === 0) {
-      throw new Error("NotFound");
-    };
+      if (errorLogs.length === 0) {
+        throw new Error("NotFound");
+      }
 
-    // ErrorLogを更新
-  const [errorLog] = await tx.$queryRaw<ErrorLog[]>
-  `UPDATE "ErrorLog"
+      // ErrorLogを更新
+      const [errorLog] = await tx.$queryRaw<ErrorLog[]>`UPDATE "ErrorLog"
   SET
     "title" = ${title},
     "status" = ${status}::"ResolutionStatus",
@@ -57,18 +56,16 @@ export const PUT = async (req: NextRequest,{params}: {params: Promise<{id: strin
     RETURNING *  
     `;
 
-    // 以前のタグ関連だけを削除
-    await tx.$executeRaw
-    `DELETE FROM "ErrorLogTag"
+      // 以前のタグ関連だけを削除
+      await tx.$executeRaw`DELETE FROM "ErrorLogTag"
     WHERE "errorLogId" = ${errorLogId}`;
 
-    const updatedTag: UpdatedTag [] = [];
-    const uniqueTags = [...new Set<string>(tags)];
-    for(const TagName of uniqueTags) {
-      const tagId = uuidv4();
+      const updatedTag: UpdatedTag[] = [];
+      const uniqueTags = [...new Set<string>(tags)];
+      for (const TagName of uniqueTags) {
+        const tagId = uuidv4();
 
-      const [tag] = await tx.$queryRaw<UpdatedTag[]>
-      `INSERT INTO "Tag" (
+        const [tag] = await tx.$queryRaw<UpdatedTag[]>`INSERT INTO "Tag" (
       "id",
       "tag_name",
       "updated_at")
@@ -82,10 +79,9 @@ export const PUT = async (req: NextRequest,{params}: {params: Promise<{id: strin
       "tag_name" = EXCLUDED."tag_name"
       RETURNING "id", "tag_name"`;
 
-      const errorLogTagId = uuidv4();
+        const errorLogTagId = uuidv4();
 
-      await tx.$executeRaw
-      `INSERT INTO "ErrorLogTag" (
+        await tx.$executeRaw`INSERT INTO "ErrorLogTag" (
       "id",
       "errorLogId",
       "tagId")
@@ -95,28 +91,76 @@ export const PUT = async (req: NextRequest,{params}: {params: Promise<{id: strin
       ${tag.id}
       )`;
 
-      updatedTag.push(tag)
-    }
+        updatedTag.push(tag);
+      }
 
-    return {
-      ...errorLog,
-      tags: updatedTag
+      return {
+        ...errorLog,
+        tags: updatedTag,
+      };
+    });
+
+    const response = {
+      status: "OK",
+      message: "エラーログを更新しました。",
+      errorLog: updatedErrorLog,
     };
-});
-
-const response = {
-  status: "OK",
-  message: "エラーログを更新しました。",
-  errorLog: updatedErrorLog,
-};
-return NextResponse.json(response);
+    return NextResponse.json(response);
   } catch (error) {
     console.error(error);
 
     if (error instanceof Error && error.message === "UNAUTHORIZED") {
-      return NextResponse.json({message: "認証が必要です。"}, {status: 401});
+      return NextResponse.json(
+        { message: "認証が必要です。" },
+        { status: 401 },
+      );
     }
-    const errorMessage = error instanceof Error ? error.message : "サーバーエラー";
-    return NextResponse.json({message: errorMessage}, {status: 500});
+    const errorMessage =
+      error instanceof Error ? error.message : "サーバーエラー";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
+  }
+};
+
+type DeletedTag = Pick<Tag, "id" | "tag_name">;
+export const DELETE = async (
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) => {
+  try {
+    const userId = await getCurrentUser();
+    const { id: errorLogId } = await params;
+
+    await prisma.$transaction(async (tx) => {
+      const errorLogs = await tx.$queryRaw<{ id: string }[]>`SELECT "id"
+        FROM "ErrorLog"
+        WHERE "id" = ${errorLogId}
+        AND "userId" = ${userId}`;
+
+      if (errorLogs.length === 0) {
+        return NextResponse.json("NotFound");
+      }
+      // 関連付けのErrorLogTagを削除
+      await tx.$executeRaw<DeletedTag[]>`DELETE FROM "ErrorLogTag"
+          WHERE "errorLogId" = ${errorLogId}`;
+
+      await tx.$executeRaw<ErrorLog[]>`DELETE FROM "ErrorLog"
+          WHERE "id" = ${errorLogId}
+          AND "userId" = ${userId}`;
+    });
+    return NextResponse.json(
+      { status: "OK", message: "エラーログの削除に成功しました。" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error && error.message === "UNAUTHORIZED") {
+      return NextResponse.json(
+        { message: "認証が必要です。" },
+        { status: 401 },
+      );
+    }
+    const errorMessage =
+      error instanceof Error ? error.message : "サーバーエラー";
+    return NextResponse.json(errorMessage, { status: 500 });
   }
 };
