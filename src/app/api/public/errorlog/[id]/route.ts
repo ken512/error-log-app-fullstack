@@ -8,8 +8,6 @@ export const GET = async (_rea: NextRequest, { params }: { params: Promise<{ id:
     const userId = await getCurrentUser();
     const { id: errorLogId } = await params;
 
-    console.log
-
     const detailErrorLogData = await prisma.$queryRaw<ErrorLog[]>`SELECT 
     el."id",
     el."title",

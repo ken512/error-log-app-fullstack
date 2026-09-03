@@ -9,31 +9,31 @@ export const HeaderAuth = async () => {
   return (
     <>
       {session?.user ? (
-        <div className="flex items-center gap-4">
-          <span className="text-white text-md hover:text-gray-300">
-            ログイン中
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+          <span className="text-gray-400 text-sm px-2 py-1 border border-gray-700 rounded w-fit">
+            状態: ログイン中({session.user.name || "ユーザー"})
           </span>
 
-          <form action={logout}>
+          <form action={logout} className="w-full md:w-auto">
             <button
               type="submit"
-              className="rounded bg-white px-4 py-2 text-black hover:bg-gray-400"
+              className="rounded text-red-400 hover:text-red-300 block px-2 py-2 text-left w-full transition-colors duration-200"
             >
               ログアウト
             </button>
           </form>
         </div>
       ) : (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4">
           <Link
             href="/login"
-            className="text-white text-md hover:text-gray-300 "
+            className="text-white text-md hover:text-gray-300 block py-2 px-2"
           >
             ログイン
           </Link>
           <Link
             href="/signup"
-            className="text-white text-md hover:text-gray-300"
+            className="text-white text-md hover:text-gray-300 block py-2 px-2"
           >
             サインアップ
           </Link>

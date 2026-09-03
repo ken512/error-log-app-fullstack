@@ -6,7 +6,7 @@ import { signIn } from "../actions/signin";
 import { signInSchema } from "../schemas/signInSchema";
 import { loginFields } from "@/config/auth/authFields";
 import { AuthModeProps } from "@/types/auth";
-import { FormInput } from "@/components/input/formInput";
+import { FormInput } from "@/components/Input/formInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export const SignInForm = ({mode}: AuthModeProps ) => {
