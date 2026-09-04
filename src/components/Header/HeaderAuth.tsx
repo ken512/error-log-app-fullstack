@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/utils/auth/auth";
-import { logout } from "../auth/actions/signout";
+import { logout } from "../../features/auth/actions/signout";
 
 // セッション取得と認証UI切り替えのコンポーネント
 export const HeaderAuth = async () => {
@@ -9,7 +9,7 @@ export const HeaderAuth = async () => {
   return (
     <>
       {session?.user ? (
-        <div className="flex items-center gap-4">
+        <div className="hidden md:block flex items-center gap-4">
           <span className="text-white text-md hover:text-gray-300">
             ログイン中
           </span>
