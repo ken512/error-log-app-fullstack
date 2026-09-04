@@ -1,14 +1,16 @@
+"use client";
+
 import { MouseEventHandler } from "react";
 
 interface ToggleEvent {
-  open: boolean;
+  isOpen: boolean;
   onClick: MouseEventHandler<HTMLButtonElement>;
   controls: string;
   label: string;
 }
 
 export const ToggleButton = ({
-  open,
+  isOpen,
   onClick,
   controls,
   label,
@@ -18,17 +20,17 @@ export const ToggleButton = ({
       type="button"
       aria-controls={controls}
       aria-label={label}
-      aria-expanded={open}
+      aria-expanded={isOpen}
       onClick={onClick}
       className="relative flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md border border-gray-200 p-2 hover: bg-gray-50 focus: outline-none"
     >
       <span
       className={`h-0.5 w-6 bg-gray-600 transition-all duration-300 ease-in-out ${
-        open ? "translate-y-[4px] rotate-45" : ""}`}
+        isOpen ? "translate-y-[4px] rotate-45" : ""}`}
       ></span>
         <span
         className={`h-0.5 w-6 bg-gray-600 transition-all duration-300 ease-in-out ${
-          open ? "-translate-y-[4px] -rotate-45" : ""}`}
+          isOpen ? "-translate-y-[4px] -rotate-45" : ""}`}
         >
         </span>
     </button>
