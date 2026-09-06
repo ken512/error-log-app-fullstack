@@ -1,6 +1,6 @@
 "use client";
 
-import { Footer } from "@/features/footer";
+import { Footer } from "@/components/footer";
 
 const TopPage = () => {
   return (
