@@ -35,10 +35,10 @@ model ErrorLog {
   updatedAt              DateTime          @updatedAt @map("updated_at")
   title                  String            @db.VarChar(255)
   status                 ResolutionStatus  @default(UNRESOLVED)          
-  os                     String            @db.VarChar(255)
-  framework_version      String            @db.VarChar(255)
-  framework              String            @db.VarChar(255)
-  solution               String?           @db.Text
+  os                     String?           @db.VarChar(255)
+  framework_version      String?           @db.VarChar(255)
+  framework              String?           @db.VarChar(255)
+  solution               String            @db.Text
   cause                  String            @db.Text
   error_message          String            @db.Text
   userId                 String            
