@@ -11,7 +11,8 @@ export const GET = async () => {
     `SELECT el."id",
         el."title",
         el."status",
-
+        el."created_at",
+        el."updated_at",
         COALESCE(
         (
         SELECT jsonb_agg(
@@ -30,7 +31,7 @@ export const GET = async () => {
         
         FROM "ErrorLog" el
         WHERE el."userId" = ${userId}
-        ORDER BY el."created_at" DESC`;
+        ORDER BY el."updated_at" DESC`;
 
     if (!errorLogListData || errorLogListData.length === 0) {
       return NextResponse.json(
