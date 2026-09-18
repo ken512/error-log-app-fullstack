@@ -9,6 +9,7 @@ export type ErrorListItem = {
   title: string;
   status: "RESOLVED" | "UNRESOLVED";
   tags: TagData[];
+  updated_at:  Date;
 };
 
 export type ErrorLogDetail = {

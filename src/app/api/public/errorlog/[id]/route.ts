@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
-export const GET = async (_rea: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+export const GET = async (_req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const userId = await getCurrentUser();
     const { id: errorLogId } = await params;
