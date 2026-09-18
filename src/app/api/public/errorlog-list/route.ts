@@ -1,14 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
   try {
     const userId = await getCurrentUser();
+    const keyword = req.nextUrl.searchParams.get("keyword")?.trim() ?? "";
+    const searchKeyword = `%${keyword}%`;
 
-    const errorLogListData = await prisma.$queryRaw<ErrorLog[]>
-    `SELECT el."id",
+    const errorLogListData = await prisma.$queryRaw<ErrorLog[]>`SELECT el."id",
         el."title",
         el."status",
         el."created_at",
@@ -31,18 +32,30 @@ export const GET = async () => {
         
         FROM "ErrorLog" el
         WHERE el."userId" = ${userId}
+          AND (
+      ${keyword} = ''
+      OR el."title" ILIKE ${searchKeyword}
+      OR el."error_message" ILIKE ${searchKeyword}
+      OR el."cause" ILIKE ${searchKeyword}
+      OR el."solution" ILIKE ${searchKeyword}
+      OR el."framework" ILIKE ${searchKeyword}
+      OR el."framework_version" ILIKE ${searchKeyword}
+      OR el."os" ILIKE ${searchKeyword}
+      OR EXISTS (
+          SELECT 1
+          FROM "ErrorLogTag" elt
+          INNER JOIN "Tag" t
+            ON t."id" = elt."tagId"
+          WHERE elt."errorLogId" = el."id"
+            AND t."tag_name" ILIKE ${searchKeyword}
+            )
+      )    
         ORDER BY el."updated_at" DESC`;
 
-    if (!errorLogListData || errorLogListData.length === 0) {
-      return NextResponse.json(
-        { message: "エラーログの情報が見つかりません。" },
-        { status: 404 },
-      );
-    }
 
     const response = {
       status: "OK",
-      errorlog: errorLogListData
+      errorlog: errorLogListData,
     };
     return NextResponse.json(response, { status: 200 });
   } catch (error) {

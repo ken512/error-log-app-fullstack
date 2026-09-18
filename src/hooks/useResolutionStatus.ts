@@ -6,9 +6,11 @@ const STATUS_JA_MAP: Record<ResolutionStatus, string> = {
 } as const;
 
 export const useResolutionStatus = () => {
-  const formatJa = (status: ResolutionStatus): string => {
+  const formatStatusJa = (status: ResolutionStatus): string => {
+    // 結果がundefinedまたはnullの場合、不明を返す
+    //  STATUS_JA_MAPのオブジェクトのvalue(値)を取り出すのにブラケット記法で、日本語を取り出している。
     return STATUS_JA_MAP[status] ?? "不明";
   };
 
-  return { formatJa };
+  return { formatStatusJa };
 };
