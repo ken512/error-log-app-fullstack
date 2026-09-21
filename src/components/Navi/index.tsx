@@ -1,4 +1,4 @@
-
+"use client"
 
 import { logout } from "@/features/auth/actions/signout";
 import Link from "next/link";
