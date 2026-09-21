@@ -17,7 +17,7 @@ const TopPage = () => {
         </div>
       </div>
 
-      <div className="border-none px-[20px] py-[20px] mx-[200px] mt-[50px] bg-[#333333] ">
+      <div className="border-none px-[20px] py-[20px] mx-[200px] mt-[50px] bg-[#333333] rounded-xl">
         <div className="flex justify-between items-center ">
           <p>TypeError: map is not a function</p>
           <span className="border border-none rounded-md p-[4px] bg-[#003300] text-[#00bb00] ">
