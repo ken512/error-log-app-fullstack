@@ -1,8 +1,16 @@
 
+
 export type TagData = {
   id: string;
   tag_name: string;
 };
+
+export type ErrorLogSummary = {
+  total: number;
+  resolved: number;
+  unresolved: number
+};
+
 
 export type ErrorLogListItem = {
   id: string;

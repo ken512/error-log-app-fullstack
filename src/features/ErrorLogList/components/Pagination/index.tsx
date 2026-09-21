@@ -18,7 +18,7 @@ export const Pagination = ({
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 font-bold my-16">
+    <div className="flex flex-col items-center gap-4 font-bold my-10">
       <p>
         全{pagination.total}件中{" "}
         {pagination.start}〜{pagination.end}件表示

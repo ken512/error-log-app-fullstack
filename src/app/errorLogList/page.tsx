@@ -1,15 +1,16 @@
 "use client";
 
 import { ErrorLogList } from "@/features/ErrorLogList";
-import { SearchInput } from "@/components/SearchInput";
+import { SearchInput } from "@/features/ErrorLogList/components/SearchInput";
 import { useDebounce } from "@/hooks/useDebounce";
-import { searchKeywordAtom } from "@/components/SearchInput";
+import { searchKeywordAtom } from "@/features/ErrorLogList/components/SearchInput";
 import { buildErrorLogListPath } from "@/utils/buildErrorLogListPath";
 import { ErrorLogListResponse } from "@/types/api-response";
 import { useGetFetcher } from "@/hooks/useFetch";
 import { useAtom, useAtomValue } from "jotai";
 import { errorLogPageAtom } from "@/stores/errorLogPageAtom";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/features/ErrorLogList/components/Pagination";
+import { ErrorLogSummaryCards } from "@/features/ErrorLogList/components/ErrorLogSummary";
 
 const ErrorLogListPage = () => {
   const [page, setPage] = useAtom(errorLogPageAtom);
@@ -26,8 +27,7 @@ const ErrorLogListPage = () => {
 
   return (
     <main className="mx-auto flex max-w-[800px] flex-col gap-10">
-      <SearchInput />
-      <h2 className="text-left text-2xl font-bold">最新のログ</h2>
+
       {isLoading ? (
         <p>読み込み中...⚙️</p>
       ) : error ? (
@@ -36,6 +36,9 @@ const ErrorLogListPage = () => {
         <p>データが存在しません。📝</p>
       ) : (
         <>
+          <ErrorLogSummaryCards summary={data.summary} />
+      <SearchInput />
+      <h2 className="text-left text-2xl font-bold">最新のログ</h2>
           <ErrorLogList errorLogs={data.errorlog} />
           <Pagination
             pagination={data.pagination}

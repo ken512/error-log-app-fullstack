@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { calculatePagination } from "@/utils/calculatePagination";
+import { ErrorLogSummary } from "@/types/errorLog.type";
 
 type CountResult = {
   total: number;
@@ -50,6 +51,19 @@ export const GET = async (req: NextRequest) => {
       pageSize: PAGE_SIZE,
       maxItems: MAX_ITEMS,
     });
+
+    const [summary] = await prisma.$queryRaw<ErrorLogSummary[]>
+    `SELECT COUNT(*)::int AS "total",
+    
+      COUNT(*) FILTER (
+      WHERE el."status" = 'RESOLVED'::"ResolutionStatus"
+      )::int AS "resolved",
+      
+      COUNT(*) FILTER (
+      WHERE el."status" = 'UNRESOLVED'::"ResolutionStatus"
+      )::int AS "unresolved"
+      FROM "ErrorLog" el
+      WHERE el."userId" = ${userId}`;
 
     const errorLogListData = await prisma.$queryRaw<ErrorLog[]>`SELECT el."id",
         el."title",
@@ -100,6 +114,7 @@ export const GET = async (req: NextRequest) => {
       status: "OK",
       errorlog: errorLogListData,
       pagination,
+      summary,
     };
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
