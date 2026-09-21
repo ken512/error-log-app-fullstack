@@ -1,43 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useGetFetcher } from "@/hooks/useFetch";
-import { ErrorLogListResponse } from "@/types/api-response";
 import { formatDate } from "@/utils/formatDate";
 import { useResolutionStatus } from "@/hooks/useResolutionStatus";
-import { useDebounce } from "@/hooks/useDebounce";
-import { searchKeywordAtom } from "@/components/SearchInput";
-import { buildErrorLogListPath } from "@/utils/buildErrorLogListPath";
-import { useAtomValue } from "jotai";
+import { ErrorLogListItem} from "@/types/errorLog.type";
 
-export const ErrorLogList = () => {
-  const keyword = useAtomValue(searchKeywordAtom);
-  const debouncedKeyword = useDebounce(keyword, 300);
+type ErrorLogListProps = {
+  errorLogs: ErrorLogListItem[];
+};
 
-  const searchPath = buildErrorLogListPath(debouncedKeyword);
-
-  const { data, error, isLoading, isFetching } =
-    useGetFetcher<ErrorLogListResponse>(
-      ["errorLogs", debouncedKeyword],
-      searchPath,
-    );
+export const ErrorLogList = ({errorLogs}: ErrorLogListProps) => {
+  
+  if(errorLogs.length === 0) return <p>検索結果がありません。</p>;
 
   const { formatStatusJa } = useResolutionStatus();
 
   return (
-    <div className="mx-auto flex max-w-[800px] flex-col gap-10">
-      <h2 className="text-left text-2xl font-bold">最新のログ</h2>
-
-      {isLoading ? (
-        <p>読み込み中...⚙️</p>
-      ) : error ? (
-        <p className="text-red-500">データ取得に失敗しました。</p>
-      ) : !data ? (
-        <p>データが存在しません。📝</p>
-      ) : data.errorlog.length === 0 ? (
-        <p>検索結果がありません。</p>
-      ) : (
-        data.errorlog.map((errorLog) => (
+    <>
+        {errorLogs.map((errorLog) => (
           <div className="w-full" key={errorLog.id}>
             <ul className="rounded-xl bg-[#333333] px-5 py-5">
               <li>
@@ -81,9 +61,7 @@ export const ErrorLogList = () => {
               </li>
             </ul>
           </div>
-        ))
-      )}
-      {isFetching && !isLoading && <p>検索中...</p>}
-    </div>
+        ))}
+    </>
   );
 };

@@ -1,8 +1,10 @@
-import { ErrorListItem, ErrorLogDetail } from "./errorLog.type"
+import { ErrorLogListItem, ErrorLogDetail } from "./errorLog.type"
+import { PaginationData } from "@/utils/calculatePagination";
 
 export type ErrorLogListResponse = {
   status: "OK",
-  errorlog: ErrorListItem[];
+  errorlog: ErrorLogListItem[];
+  pagination: PaginationData;
 };
 
 export type CreateErrorLogResponse = {

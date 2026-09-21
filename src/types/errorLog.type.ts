@@ -4,7 +4,7 @@ export type TagData = {
   tag_name: string;
 };
 
-export type ErrorListItem = {
+export type ErrorLogListItem = {
   id: string;
   title: string;
   status: "RESOLVED" | "UNRESOLVED";

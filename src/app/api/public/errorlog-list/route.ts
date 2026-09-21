@@ -99,6 +99,7 @@ export const GET = async (req: NextRequest) => {
     const response = {
       status: "OK",
       errorlog: errorLogListData,
+      pagination,
     };
     return NextResponse.json(response, { status: 200 });
   } catch (error) {

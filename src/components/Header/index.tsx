@@ -1,5 +1,4 @@
 
-
 import Link from "next/link";
 import { HeaderAuth } from "./HeaderAuth";
 import { MenuBar } from "../MenuBar";

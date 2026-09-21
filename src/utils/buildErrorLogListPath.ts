@@ -1,16 +1,19 @@
 
 // 検索パスの共通関数
-// 検索キーワード有無によって、APIへ送るURLを切り替えている。
-export const buildErrorLogListPath = (keyword: string): string => {
+// 検索キーワードとページ番号からAPIリクエストパスを生成。
+export const buildErrorLogListPath = (keyword: string, page: number): string => {
 
   const trimmedKeyword = keyword.trim();
-  // キーワードが空白の場合は、一覧取得APIへリクエスト
-  if(!trimmedKeyword) return "/public/errorlog-list";
 
-  // キーワードある場合は、キーワードをクエリパラメータへ変換し、検索条件付きのパスを返す
+   // ページ番号は常にクエリパラメータへ追加
   const searchParams = new URLSearchParams({
-    keyword: trimmedKeyword,
+    page: String(page),
   });
+
+  // キーワードがある場合だけ追加
+  if(trimmedKeyword) {
+    searchParams.set("keyword", trimmedKeyword);
+  };
 
   return `/public/errorlog-list?${searchParams.toString()}`;
 };

@@ -15,14 +15,14 @@ export const calculatePagination = ({
   const total = Math.min(totalCount, maxItems);
 
   // 総ページ数
-  const totalPage = Math.ceil(total / pageSize);
+  const totalPages = Math.ceil(total / pageSize);
 
   // 不正なページ番号は1ページ目にする
   const validPage =
     Number.isInteger(requestedPage) && requestedPage >= 1 ? requestedPage : 1;
 
   // 最大ページ数を超えないようにする
-  const page = totalPage > 0 ? Math.min(validPage, totalPage) : 1;
+  const page = totalPages > 0 ? Math.min(validPage, totalPages) : 1;
   
   // DBで読み飛ばす件数
   const offset = (page - 1) * pageSize;
@@ -40,8 +40,11 @@ export const calculatePagination = ({
     limit,
     offset,
     total,
-    totalPage,
+    totalPages,
     start,
     end
   };
 };
+
+// calculatePagination関数を返り値の型
+export type PaginationData = ReturnType<typeof calculatePagination>;
