@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { ErrorLog } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import { calculatePagination } from "@/utils/calculatePagination";
+import { calculatePagination } from "@/utils/ErrorLogList/calculatePagination";
 import { ErrorLogSummary } from "@/types/errorLog.type";
 
 type CountResult = {

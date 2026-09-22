@@ -1,5 +1,5 @@
 import { ErrorLogListItem, ErrorLogDetail } from "./errorLog.type"
-import { PaginationData } from "@/utils/calculatePagination";
+import { PaginationData } from "@/utils/ErrorLogList/calculatePagination";
 import { ErrorLogSummary } from "./errorLog.type";
 
 export type ErrorLogListResponse = {
