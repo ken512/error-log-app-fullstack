@@ -41,8 +41,9 @@ model ErrorLog {
   solution               String            @db.Text
   cause                  String            @db.Text
   error_message          String            @db.Text
+  reference_url          String?           @db.Text
   userId                 String            
-  user                   User             @relation(fields: [userId], references: [id])
+  user                   User              @relation(fields: [userId], references: [id])
   errorLogTag            ErrorLogTag[]
 }
 

@@ -6,20 +6,35 @@ type ErrorLogSummaryCardProps = {
 
 export const ErrorLogSummaryCards = ({ summary }: ErrorLogSummaryCardProps) => {
   return (
-    <section className="flex items-center gap-4 text-left max-w-[120px] font-bold m-10">
-      <div className="border rounded-md px-1 py-3 bg-black">
-        <p>記録したログ</p>
-        <p>{summary.total}件</p>
+    <section className="grid w-full grid-cols-3 gap-4 text-left">
+      <div className="min-h-[90px] rounded-lg bg-black p-3">
+        <p className="text-sm font-bold">
+          記録したログ
+        </p>
+
+        <p className="text-2xl font-bold">
+          {summary.total}
+        </p>
       </div>
 
-      <div className="border rounded-md px-1 py-3 bg-black">
-        <p>解決済み</p>
-        <p className="text-green-400">{summary.resolved}件</p>
+      <div className="min-h-[90px] rounded-lg bg-black p-3">
+        <p className="text-sm font-bold">
+          解決済み
+        </p>
+
+        <p className="text-2xl font-bold text-green-500">
+          {summary.resolved}
+        </p>
       </div>
 
-      <div className="border rounded-md px-1 py-3 bg-black">
-        <p>未解決</p>
-        <p>{summary.unresolved}件</p>
+      <div className="min-h-[90px] rounded-lg bg-black p-3">
+        <p className="text-sm font-bold">
+          未解決
+        </p>
+
+        <p className="text-2xl font-bold">
+          {summary.unresolved}
+        </p>
       </div>
     </section>
   );

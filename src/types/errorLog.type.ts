@@ -30,5 +30,6 @@ export type ErrorLogDetail = {
   solution: string;
   cause: string;
   error_message: string;
+  reference_url: string | null;
   tags: TagData[];
 };
