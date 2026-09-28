@@ -1,3 +1,5 @@
+// API・DB取得に必要なページ情報の計算
+
 type CalculatePaginationParams = {
   requestedPage: number;
   totalCount: number;

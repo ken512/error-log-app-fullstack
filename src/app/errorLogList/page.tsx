@@ -4,13 +4,14 @@ import { ErrorLogList } from "@/features/ErrorLogList";
 import { SearchInput } from "@/features/ErrorLogList/components/SearchInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchKeywordAtom } from "@/features/ErrorLogList/components/SearchInput";
-import { buildErrorLogListPath } from "@/utils/buildErrorLogListPath";
+import { buildErrorLogListPath } from "@/utils/ErrorLogList/buildErrorLogListPath";
 import { ErrorLogListResponse } from "@/types/api-response";
 import { useGetFetcher } from "@/hooks/useFetch";
 import { useAtom, useAtomValue } from "jotai";
 import { errorLogPageAtom } from "@/stores/errorLogPageAtom";
 import { Pagination } from "@/features/ErrorLogList/components/Pagination";
 import { ErrorLogSummaryCards } from "@/features/ErrorLogList/components/ErrorLogSummary";
+
 
 const ErrorLogListPage = () => {
   const [page, setPage] = useAtom(errorLogPageAtom);
@@ -24,6 +25,7 @@ const ErrorLogListPage = () => {
       ["errorLogs", debouncedKeyword, page],
       searchPath,
     );
+  
 
   return (
     <main className="mx-auto flex max-w-[800px] flex-col gap-10">
@@ -50,6 +52,7 @@ const ErrorLogListPage = () => {
                 Math.min(currentPage + 1, data.pagination.totalPages),
               );
             }}
+            onPageChange={(pageNumber) => {setPage(pageNumber)}}
           />
         </>
       )}

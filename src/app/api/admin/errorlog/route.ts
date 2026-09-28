@@ -22,11 +22,13 @@ export const POST = async (req: NextRequest) => {
       solution,
       cause,
       error_message,
+      reference_url,
       tags,
     } = body;
 
     const errorLogData = await prisma.$transaction(async(tx) => {
 
+    const referenceUrl = reference_url.trim() || null;  
     const [createdErrorLog] = await tx.$queryRaw<ErrorLog[]>` INSERT INTO "ErrorLog" (
     "id",
     "userId",
@@ -38,6 +40,7 @@ export const POST = async (req: NextRequest) => {
     "solution",
     "cause",
     "error_message",
+    "reference_url",
     "created_at",
     "updated_at"
   )
@@ -52,6 +55,7 @@ export const POST = async (req: NextRequest) => {
     ${solution},
     ${cause},
     ${error_message},
+    ${referenceUrl},
     NOW(),
     NOW()
   )
