@@ -12,7 +12,6 @@ import { errorLogPageAtom } from "@/stores/errorLogPageAtom";
 import { Pagination } from "@/features/ErrorLogList/components/Pagination";
 import { ErrorLogSummaryCards } from "@/features/ErrorLogList/components/ErrorLogSummary";
 
-
 const ErrorLogListPage = () => {
   const [page, setPage] = useAtom(errorLogPageAtom);
   const keyword = useAtomValue(searchKeywordAtom);
@@ -25,11 +24,10 @@ const ErrorLogListPage = () => {
       ["errorLogs", debouncedKeyword, page],
       searchPath,
     );
-  
 
   return (
     <main className="mx-auto flex max-w-[800px] flex-col gap-10">
-
+      <SearchInput />
       {isLoading ? (
         <p>読み込み中...⚙️</p>
       ) : error ? (
@@ -39,8 +37,7 @@ const ErrorLogListPage = () => {
       ) : (
         <>
           <ErrorLogSummaryCards summary={data.summary} />
-      <SearchInput />
-      <h2 className="text-left text-2xl font-bold">最新のログ</h2>
+          <h2 className="text-left text-2xl font-bold">最新のログ</h2>
           <ErrorLogList errorLogs={data.errorlog} />
           <Pagination
             pagination={data.pagination}
@@ -52,7 +49,9 @@ const ErrorLogListPage = () => {
                 Math.min(currentPage + 1, data.pagination.totalPages),
               );
             }}
-            onPageChange={(pageNumber) => {setPage(pageNumber)}}
+            onPageChange={(pageNumber) => {
+              setPage(pageNumber);
+            }}
           />
         </>
       )}
