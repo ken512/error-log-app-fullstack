@@ -5,10 +5,10 @@ import { ErrorLogFormValues } from "../../types/errorLogForm";
 import { CreateErrorLogResponse } from "@/types/api-response";
 import { BasicInformationSection } from "./BasicInformationSection";
 import { EnvironmentSection } from "./EnvironmentSection";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Button/Button";
 import { ErrorDetailsSection } from "./ErrorDetailsSection";
+import { FormResetButton } from "@/components/FormResetButton";
 import { FormProvider, useForm } from "react-hook-form";
-
 
 export const ErrorLogNewCreateForm = () => {
   const methods = useForm<ErrorLogFormValues>({
@@ -44,17 +44,20 @@ export const ErrorLogNewCreateForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col gap-8">
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8"
+      >
         <BasicInformationSection />
         <EnvironmentSection />
         <ErrorDetailsSection />
-        <Button type="submit" disabled={isPending} className="mt-10 border">
-          {isPending ? "保留中..." : "投稿する"}
-        </Button>
-
-        {error && (
-          <p className="text-red-500">投稿に失敗</p>
-        )}
+        <div className="grid grid-cols-2 gap-4">
+          <Button type="submit" disabled={isPending} className="mt-10 border">
+            {isPending ? "保留中..." : "投稿する"}
+          </Button>
+          <FormResetButton />
+        </div>
+        {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
     </FormProvider>
   );
