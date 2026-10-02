@@ -9,10 +9,7 @@ export const TagInput = () => {
   const [tagInput, setTagInput] = useAtom(tagInputAtom);
   const [tags, setTags] = useAtom(errorLogTagsAtom);
   const { setValue } = useFormContext<ErrorLogFormValues>();
-
   const MAX_TAGS = 5;
-
-  
 
   const handleTagTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") {
@@ -23,11 +20,11 @@ export const TagInput = () => {
     const newTag = tagInput.trim();
 
     // 空欄は追加しない。
-    if (!newTag) { 
+    if (!newTag) {
       return;
-    };
+    }
     // 上限５個まで。
-    if(tags.length >= MAX_TAGS) {
+    if (tags.length >= MAX_TAGS) {
       return;
     }
 
@@ -45,7 +42,7 @@ export const TagInput = () => {
       shouldDirty: true,
       shouldValidate: true,
     });
-    
+
     setTagInput("");
   };
 
@@ -56,8 +53,8 @@ export const TagInput = () => {
   return (
     <div className="flex flex-col gap-3 border-md">
       <label className="text-xl">技術タグ</label>
-      { tags.length === 5 && (
-      <p className="text-red-500">タグの追加は上限５個まで</p>
+      {tags.length === 5 && (
+        <p className="text-red-500">タグの追加は上限５個まで</p>
       )}
       <input
         id="tag"
@@ -71,7 +68,10 @@ export const TagInput = () => {
 
       <div className="mt-5 flex gap-2">
         {tags.map((tag) => (
-          <span key={tag} className=" border-none rounded-md px-4 py-3 bg-blue-800 text-white">
+          <span
+            key={tag}
+            className=" border-none rounded-md px-4 py-3 bg-blue-800 text-white"
+          >
             {tag}
             <button
               type="button"

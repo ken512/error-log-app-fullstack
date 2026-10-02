@@ -3,7 +3,7 @@
 import { useFormContext } from "react-hook-form";
 import { useResolutionStatus } from "@/hooks/useResolutionStatus";
 import { TagInput } from "../TagInput/TagInput";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Button/Button";
 import { ResolutionStatus } from "@/generated/prisma";
 import { ErrorLogFormValues } from "../../types/errorLogForm";
 
