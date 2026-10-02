@@ -23,7 +23,7 @@ export const FormResetButton = () => {
   };
 
   return (
-    <Button type="button" onClick={handleReset} className="border">
+    <Button type="button" onClick={handleReset} className="border-none text-black bg-white">
       クリア
     </Button>
   );

@@ -51,11 +51,11 @@ export const ErrorLogNewCreateForm = () => {
         <BasicInformationSection />
         <EnvironmentSection />
         <ErrorDetailsSection />
-        <div className="grid grid-cols-2 gap-4">
-          <Button type="submit" disabled={isPending} className="mt-10 border">
+        <div className="flex gap-16 mx-auto my-10">
+          <FormResetButton />
+          <Button type="submit" disabled={isPending} className=" border-none bg-blue-500">
             {isPending ? "保留中..." : "投稿する"}
           </Button>
-          <FormResetButton />
         </div>
         {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
