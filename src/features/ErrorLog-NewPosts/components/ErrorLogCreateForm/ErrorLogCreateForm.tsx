@@ -9,6 +9,9 @@ import { Button } from "@/components/Button/Button";
 import { ErrorDetailsSection } from "./ErrorDetailsSection";
 import { FormResetButton } from "@/components/FormResetButton";
 import { FormProvider, useForm } from "react-hook-form";
+import { Dialog } from "@/components/Dialog";
+import { useSetAtom } from "jotai";
+import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
 
 export const ErrorLogNewCreateForm = () => {
   const methods = useForm<ErrorLogFormValues>({
@@ -26,6 +29,8 @@ export const ErrorLogNewCreateForm = () => {
       reference_url: "",
     },
   });
+
+  const dispatch = useSetAtom(dialogActionsAtom);
 
   const { mutate, error, isPending } = usePost<
     ErrorLogFormValues,
@@ -53,12 +58,13 @@ export const ErrorLogNewCreateForm = () => {
         <ErrorDetailsSection />
         <div className="flex gap-16 mx-auto my-10">
           <FormResetButton />
-          <Button type="submit" disabled={isPending} className=" border-none bg-blue-500">
+          <Button type="submit" disabled={isPending} onClick={methods.handleSubmit(() => dispatch("open"))} className=" border-none bg-blue-500">
             {isPending ? "保留中..." : "投稿する"}
           </Button>
         </div>
         {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
+      <Dialog onConfirm={methods.handleSubmit(onSubmit)}/>
     </FormProvider>
   );
 };
