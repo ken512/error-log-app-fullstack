@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Dialog } from "@/components/Dialog";
 import { useSetAtom } from "jotai";
 import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
+import toast, { Toaster } from "react-hot-toast";
 
 export const ErrorLogNewCreateForm = () => {
   const methods = useForm<ErrorLogFormValues>({
@@ -40,15 +41,18 @@ export const ErrorLogNewCreateForm = () => {
   const onSubmit = (formValues: ErrorLogFormValues) => {
     mutate(formValues, {
       onSuccess: (response) => {
-        console.log(response.message);
-        console.log(response.errorLogData);
+        toast.success(response.message);
         methods.reset();
+      },
+      onError: () => {
+        toast.error("エラーログの投稿に失敗しました");
       },
     });
   };
 
   return (
     <FormProvider {...methods}>
+      <Toaster position="top-center" reverseOrder={false} />
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
         className="flex flex-col gap-8"
@@ -58,13 +62,18 @@ export const ErrorLogNewCreateForm = () => {
         <ErrorDetailsSection />
         <div className="flex gap-16 mx-auto my-10">
           <FormResetButton />
-          <Button type="submit" disabled={isPending} onClick={methods.handleSubmit(() => dispatch("open"))} className=" border-none bg-blue-500">
+          <Button
+            type="submit"
+            disabled={isPending}
+            onClick={methods.handleSubmit(() => dispatch("open"))}
+            className=" border-none bg-blue-500"
+          >
             {isPending ? "保留中..." : "投稿する"}
           </Button>
         </div>
         {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
-      <Dialog onConfirm={methods.handleSubmit(onSubmit)}/>
+      <Dialog onConfirm={methods.handleSubmit(onSubmit)} />
     </FormProvider>
   );
 };

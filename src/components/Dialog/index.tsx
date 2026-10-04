@@ -7,8 +7,9 @@ type DialogProps = {
 };
 
 export const Dialog = ({ onConfirm }: DialogProps) => {
-  // dialogActionsAtomで、ダイアログのアクションごとを取得。
+  // ダイアログを開く時の状態管理。
   const isOpen = useAtomValue(dialogOpenAtom);
+  // ダイアログのアクションごとの状態管理
   const dispatch = useSetAtom(dialogActionsAtom);
 
   if (!isOpen) return null;
@@ -21,10 +22,7 @@ export const Dialog = ({ onConfirm }: DialogProps) => {
         <div className="flex justify-center gap-4 w-full">
           <Button
             className="flex-1 border-none bg-red-500 text-white"
-            onClick={async () => {
-              await onConfirm();
-              dispatch("close");
-            }}
+            onClick={() => dispatch("close")}
           >
             キャンセル
           </Button>
