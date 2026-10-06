@@ -9,6 +9,11 @@ export type ErrorLogListResponse = {
   summary: ErrorLogSummary;
 };
 
+export type ErrorLogDetailResponse = {
+  status: "OK";
+  detailErrorLog: ErrorLogDetail;
+};
+
 export type CreateErrorLogResponse = {
   status: "OK",
   message: string;

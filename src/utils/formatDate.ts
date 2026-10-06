@@ -8,6 +8,8 @@ type FormatDateProps = {
 // UTCで作成・更新された日時のフォーマットに変換する関数
 // TZDateはnumber型のため、Stringで文字列型に変換
 export const formatDate = ({ date }: FormatDateProps) => {
+  if(!date) return "";
+  
   const japanDate = new TZDate(String(date), "UTC");
 
   return format(japanDate, "yyyy/MM/dd");
