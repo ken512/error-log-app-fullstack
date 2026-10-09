@@ -2,6 +2,7 @@
 
 import { useGetFetcher } from "@/hooks/useFetch";
 import { ErrorLogHeaderContent } from "./components/ErrorLogHeaderContent";
+import { ErrorLogDetailsSection } from "./components/ErrorLogDetailsSection";
 import Link from "next/link";
 import { ErrorLogDetailResponse } from "@/types/api-response";
 
@@ -27,6 +28,7 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
       <Link href="/errorLogList">
       <span className="text-xl text-[#1e90ff] ">← 一覧に戻る</span>
       <ErrorLogHeaderContent errorLogs={[data.detailErrorLog]} />
+      <ErrorLogDetailsSection errorLogs={[data.detailErrorLog]}/>
       </Link>
     </main>
   );

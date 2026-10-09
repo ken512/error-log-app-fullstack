@@ -25,6 +25,7 @@ export const PUT = async (
       solution,
       cause,
       error_message,
+      reference_url,
       tags,
     } = body;
 
@@ -50,6 +51,7 @@ export const PUT = async (
     "solution" = ${solution},
     "cause" = ${cause},
     "error_message" = ${error_message},
+    "reference_url" = ${reference_url},
     "updated_at" = NOW()
     WHERE "id" = ${errorLogId} 
       AND "userId" = ${userId}
