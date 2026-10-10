@@ -32,4 +32,5 @@ export type ErrorLogDetail = {
   error_message: string;
   reference_url: string | null;
   tags: TagData[];
+  updated_at:  Date;
 };
