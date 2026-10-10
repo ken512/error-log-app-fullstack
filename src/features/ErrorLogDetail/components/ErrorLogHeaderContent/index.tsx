@@ -7,10 +7,6 @@ type ErrorLogDetailsProps = {
 };
 
 export const ErrorLogHeaderContent = ({ errorLogs }: ErrorLogDetailsProps) => {
-  if (errorLogs.length === 0) {
-    return <p>データがありません。</p>;
-  }
-
   const { formatStatusJa } = useResolutionStatus();
 
   return (
@@ -28,21 +24,21 @@ export const ErrorLogHeaderContent = ({ errorLogs }: ErrorLogDetailsProps) => {
             >
               {formatStatusJa(errorLog.status)}
             </span>
-            <div className="flex items-center gap-2">
-              {errorLog.tags
-                .filter((tag) => tag.tag_name.trim() !== "")
-                .map((tag) => (
-                  <p
-                    className="rounded-md bg-blue-950 px-4 py-2 text-sm text-blue-400"
-                    key={tag.id}
-                  >
-                    {tag.tag_name}
-                  </p>
-                ))}
-              <span className="text-sm text-gray-200">
-                {formatDate({ date: errorLog.updated_at })}
-              </span>
-            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-5">
+            {errorLog.tags
+              .filter((tag) => tag.tag_name.trim() !== "")
+              .map((tag) => (
+                <p
+                  className="rounded-md bg-blue-950 px-4 py-2 text-sm text-blue-400"
+                  key={tag.id}
+                >
+                  {tag.tag_name}
+                </p>
+              ))}
+            <span className="text-sm text-gray-200">
+              {formatDate({ date: errorLog.updated_at })}
+            </span>
           </div>
         </div>
       ))}
