@@ -22,15 +22,15 @@ export const ErrorLogDetailsSection = ({
         >
           {/*発生環境*/}
           <div className="rounded-xl bg-[#333333] px-5 py-5">
-            <p className="text-xl text-gray-400">発生環境</p>
+            <label className="text-xl font-bold">発生環境</label>
             <div className="flex gap-3 mt-5">
               <div className="flex flex-col gap-2">
-                <label className="text-md text-gray-400">OS</label>
+                <label className="text-md font-bold">OS</label>
                 {isEditing ? (
                   <input
                     type="text"
                     defaultValue={errorLog.os ?? ""}
-                    {...register("framework")}
+                    {...register("os")}
                     className="border-none rounded-xl bg-[#222222] px-5 py-3 font-bold"
                   />
                 ) : (
@@ -41,11 +41,12 @@ export const ErrorLogDetailsSection = ({
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-md text-gray-400">フレームワーク</label>
+                <label className="text-md font-bold">フレームワーク</label>
                 {isEditing ? (
                   <input
                     type="text"
-                    defaultValue={errorLog.framework_version ?? ""}
+                    defaultValue={errorLog.framework ?? ""}
+                    {...register("framework")}
                     className="border-none rounded-xl bg-[#222222] px-5 py-3 font-bold"
                   />
                 ) : (
@@ -56,13 +57,14 @@ export const ErrorLogDetailsSection = ({
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-md text-gray-400">
+                <label className="text-md font-bold">
                   フレームワークVer.
                 </label>
                 {isEditing ? (
                   <input
                     type="text"
                     defaultValue={errorLog.framework_version ?? ""}
+                    {...register("framework_version")}
                     className="border-none rounded-xl bg-[#222222] px-5 py-3 font-bold"
                   />
                 ) : (
@@ -76,7 +78,7 @@ export const ErrorLogDetailsSection = ({
 
           {/*エラーメッセージ*/}
           <div className="rounded-xl bg-[#333333] px-5 py-5">
-            <span className="text-xl text-gray-400">エラーメッセージ</span>
+            <label className="text-xl font-bold">エラーメッセージ</label>
             <div className="mt-5">
               {isEditing ? (
                 <textarea
@@ -93,7 +95,7 @@ export const ErrorLogDetailsSection = ({
 
           {/*原因*/}
           <div className="rounded-xl bg-[#333333] px-5 py-5">
-            <span className="text-xl text-gray-400">原因</span>
+            <label className="text-xl font-bold">原因</label>
             <div className="mt-5">
               {isEditing ? (
                 <textarea
@@ -110,7 +112,7 @@ export const ErrorLogDetailsSection = ({
 
           {/*解決方法*/}
           <div className="rounded-xl bg-[#333333] px-5 py-5">
-            <span className="text-xl text-gray-400">解決方法</span>
+            <label className="text-xl font-bold">解決方法</label>
             <div className="mt-5">
               {isEditing ? (
                 <textarea
@@ -127,7 +129,7 @@ export const ErrorLogDetailsSection = ({
 
           {/*参考URL*/}
           <div className="rounded-xl bg-[#333333] px-5 py-5">
-            <span className="text-xl text-gray-400">参考URL</span>
+            <label className="text-xl font-bold">参考URL</label>
             <div className="mt-5">
               {isEditing ? (
                 <input

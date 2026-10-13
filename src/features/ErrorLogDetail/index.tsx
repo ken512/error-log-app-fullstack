@@ -45,27 +45,47 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
     },
   });
 
+
+
   // データ取得fetch
   const { data: detailData, error } = useGetFetcher<ErrorLogDetailResponse>(
     ["errorLogs", errorLogId],
     `/public/errorlog/${errorLogId}`,
   );
 
+  const { reset } = methods;
+
+  // apiから非同期で取得したデータ(detailData)が届いたタイミングで、useEffectを実行
+  // resetを使って、取得データをReact Hook Formが管理するフォーム全体の初期値として返す。
+  // resetは、取得データをフォーム全体の値を一括設定。
+  useEffect(() => {
+    if (!detailData) return;
+
+    const errorLog = detailData.detailErrorLog;
+
+    reset({
+      title: errorLog.title ?? "",
+      status: errorLog.status ?? "UNRESOLVED",
+      os: errorLog.os ?? "",
+      framework: errorLog.framework ?? "",
+      framework_version: errorLog.framework_version ?? "",
+      error_message: errorLog.error_message ?? "",
+      cause: errorLog.cause ?? "",
+      solution: errorLog.solution ?? "",
+      reference_url: errorLog.reference_url ?? "",
+      tags: errorLog.tags.map((tag) => tag.tag_name),
+    });
+  }, [detailData, reset]);
+
   // データ更新
-  const {
-    mutate: updateErrorLog,
-    data: updatedData,
-    isPending: isUpdating,
-  } = usePut<ErrorLogFormValues, UpdateErrorLogResponse>(
-    `/admin/errorlog/${errorLogId}`,
-  );
+  const { mutate: updateErrorLog, isPending: isUpdating } = usePut<
+    ErrorLogFormValues,
+    UpdateErrorLogResponse
+  >(`/admin/errorlog/${errorLogId}`);
 
   // データ削除
-  const {
-    mutate: deleteErrorLog,
-    data: deletedData,
-    isPending: isDeleting,
-  } = useDelete<DeleteErrorLogResponse>(`/admin/errorlog/${errorLogId}`);
+  const { mutate: deleteErrorLog, isPending: isDeleting } =
+    useDelete<DeleteErrorLogResponse>(`/admin/errorlog/${errorLogId}`);
 
   if (error) {
     return <p className="text-red-500">データ取得に失敗しました。</p>;
@@ -114,32 +134,31 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
     });
   };
 
-
   return (
     <FormProvider {...methods}>
       <Toaster position="top-center" />
       <form onSubmit={methods.handleSubmit(handleEdit)}>
-          <div className="mx-auto flex max-w-[800px] flex-col gap-10">
-            <Link href="/errorLogList">
-              <span className="text-xl text-[#1e90ff] ">← 一覧に戻る</span>
-            </Link>
-            <ErrorLogHeaderContent
-              errorLogs={[detailData.detailErrorLog]}
-              isEditing={isEditing}
-            />
-            <ErrorLogDetailsSection
-              errorLogs={[detailData.detailErrorLog]}
-              isEditing={isEditing}
-            />
-            <ErrorLogActionsSection
-              isEditing={isEditing}
-              isUpdating={isUpdating}
-              isDeleting={isDeleting}
-              onEdit={handleStartEdit}
-              onCancel={handleCancel}
-              onDelete={handleDelete}
-            />
-          </div>
+        <div className="mx-auto flex max-w-[800px] flex-col gap-10">
+          <Link href="/errorLogList">
+            <span className="text-xl text-[#1e90ff] ">← 一覧に戻る</span>
+          </Link>
+          <ErrorLogHeaderContent
+            errorLogs={[detailData.detailErrorLog]}
+            isEditing={isEditing}
+          />
+          <ErrorLogDetailsSection
+            errorLogs={[detailData.detailErrorLog]}
+            isEditing={isEditing}
+          />
+          <ErrorLogActionsSection
+            isEditing={isEditing}
+            isUpdating={isUpdating}
+            isDeleting={isDeleting}
+            onEdit={handleStartEdit}
+            onCancel={handleCancel}
+            onDelete={handleDelete}
+          />
+        </div>
       </form>
     </FormProvider>
   );
