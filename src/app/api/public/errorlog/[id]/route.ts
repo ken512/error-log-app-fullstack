@@ -18,6 +18,7 @@ export const GET = async (_req: NextRequest, { params }: { params: Promise<{ id:
     el."solution",
     el."cause",
     el."error_message",
+    el."updated_at",
 
     COALESCE(
     (

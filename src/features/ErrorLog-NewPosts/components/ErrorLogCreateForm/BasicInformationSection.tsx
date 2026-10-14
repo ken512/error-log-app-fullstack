@@ -8,7 +8,7 @@ import { ResolutionStatus } from "@/generated/prisma";
 import { ErrorLogFormValues } from "../../types/errorLogForm";
 
 
-const STATUS_OPTIONS: ResolutionStatus[] = ["RESOLVED", "UNRESOLVED"] as const;
+export const STATUS_OPTIONS: ResolutionStatus[] = ["RESOLVED", "UNRESOLVED"] as const;
 
 export const BasicInformationSection = () => {
   const { register, watch, setValue } = useFormContext<ErrorLogFormValues>();
