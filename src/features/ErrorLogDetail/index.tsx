@@ -7,7 +7,6 @@ import { ErrorLogActionsSection } from "./components/ErrorLogActionsSection";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import { ErrorLogFormValues } from "../ErrorLog-NewPosts/types/errorLogForm";
-import { Button } from "@/components/Button/Button";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { usePut } from "@/hooks/useFetch";
@@ -18,7 +17,10 @@ import {
   UpdateErrorLogResponse,
 } from "@/types/api-response";
 import { useQueryClient } from "@tanstack/react-query";
+import { Dialog } from "@/components/Dialog";
 import { useEffect, useState } from "react";
+import { useSetAtom } from "jotai";
+import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
 
 type Props = {
   errorLogId: string;
@@ -29,6 +31,9 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
   const router = useRouter();
   // キャッシュの保管庫のインスタンスを定義。
   const queryClient = useQueryClient();
+
+  const dispatch = useSetAtom(dialogActionsAtom);
+
   const methods = useForm<ErrorLogFormValues>({
     defaultValues: {
       // defaultValuesで、フォームの初期を設定し、コンポーネントの初回レンダリング時を一度だけキャッシュ。
@@ -44,8 +49,6 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
       reference_url: "",
     },
   });
-
-
 
   // データ取得fetch
   const { data: detailData, error } = useGetFetcher<ErrorLogDetailResponse>(
@@ -109,10 +112,9 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
     updateErrorLog(formValues, {
       onSuccess: (response) => {
         toast.success(response.message);
-
-        queryClient.invalidateQueries({ queryKey: ["errorLog", errorLogId] });
-        queryClient.invalidateQueries({ queryKey: ["errorLogs"] });
+        dispatch("close");
         setIsEditing(false);
+        queryClient.invalidateQueries({ queryKey: ["errorLog", errorLogId] });
       },
 
       onError: () => {
@@ -126,6 +128,7 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
     deleteErrorLog(undefined, {
       onSuccess: (response) => {
         toast.success(response.message);
+        dispatch("close");
         router.push("/errorLogList");
       },
       onError: () => {
@@ -156,10 +159,14 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
             isDeleting={isDeleting}
             onEdit={handleStartEdit}
             onCancel={handleCancel}
-            onDelete={handleDelete}
           />
         </div>
       </form>
-    </FormProvider>
+      <Dialog
+        onConfirm={isEditing ? methods.handleSubmit(handleEdit) : handleDelete}
+        actions={isEditing ? "update" : "delete"}
+        isPending={isEditing ? isUpdating : isDeleting}
+      />
+    </FormProvider> 
   );
 };

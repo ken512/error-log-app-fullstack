@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/Button/Button";
+import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
+import { useSetAtom } from "jotai";
 
 type ErrorLogActionsProps = {
   isEditing: boolean;
@@ -8,7 +10,6 @@ type ErrorLogActionsProps = {
   isDeleting: boolean;
   onEdit: () => void;
   onCancel: () => void;
-  onDelete: () => void;
 };
 
 export const ErrorLogActionsSection = ({
@@ -17,22 +18,24 @@ export const ErrorLogActionsSection = ({
   isDeleting,
   onEdit,
   onCancel,
-  onDelete,
 }: ErrorLogActionsProps) => {
+
+  const dispatch = useSetAtom(dialogActionsAtom);
+  
   return (
     <section className="mt-10 w-full my-10 rounded-xl bg-[#333333] px-5 py-5">
       {isEditing ? (
         <div className="flex gap-16 justify-center">
           <Button
-            type="submit"
+            type="button"
             disabled={isUpdating}
+            onClick={() => dispatch("open")}
             className="border border-[#1e90ff] text-[#1e90ff] font-bold px-3 py-3"
           >
             {isUpdating ? "保存中" : "保存"}
           </Button>
           <Button
             type="button"
-            disabled={isUpdating}
             onClick={onCancel}
             className="border border-[#ff6666] text-[#ff6666] font-bold px-3 py-3"
           >
@@ -51,7 +54,7 @@ export const ErrorLogActionsSection = ({
           <Button
             type="button"
             disabled={isDeleting}
-            onClick={onDelete}
+            onClick={() => dispatch("open")}
             className="border border-[#ff6666] text-[#ff6666] font-bold px-3 py-3"
           >
             {isDeleting ? "削除中..." : "削除する"}

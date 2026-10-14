@@ -79,7 +79,10 @@ export const ErrorLogHeaderContent = ({
                         type="button"
                         aria-pressed={isSelected}
                         onClick={() =>
-                          setValue("status", status)
+                          setValue("status", status, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          })
                         }
                         className={`w-full rounded-md border px-5 py-3 ${
                           isSelected

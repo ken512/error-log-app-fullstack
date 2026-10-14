@@ -73,7 +73,7 @@ export const ErrorLogNewCreateForm = () => {
         </div>
         {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
-      <Dialog onConfirm={methods.handleSubmit(onSubmit)} />
+      <Dialog onConfirm={methods.handleSubmit(onSubmit)} actions="create" />
     </FormProvider>
   );
 };
