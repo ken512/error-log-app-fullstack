@@ -62,11 +62,11 @@ export const PUT = async (req: NextRequest) => {
     const userData = await prisma.$executeRaw`
       UPDATE "User"
       SET 
-        "userName" = ${userName},
-        "profileIcon" = ${profileIcon},
-        "xUrl" = ${xUrl},
-        "threadsUrl" = ${threadsUrl},
-        "githubUrl" = ${githubUrl},
+        "userName" = ${userName ?? null},
+        "profileIcon" = ${profileIcon ?? null},
+        "xUrl" = ${xUrl ?? null},
+        "threadsUrl" = ${threadsUrl ?? null},
+        "githubUrl" = ${githubUrl ?? null},
         "updated_at" = NOW()
       WHERE "id" = ${userId}
     `;
