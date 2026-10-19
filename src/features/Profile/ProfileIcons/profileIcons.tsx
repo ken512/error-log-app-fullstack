@@ -51,7 +51,9 @@ const PROFILE_ICONS = [
 ];
 
 export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
-  const activeIcons = PROFILE_ICONS.filter(({ key }) => !!profile[key]);
+  
+  // PROFILE_ICONSの各SNSのURLが設定されているかを判定。
+  const activeIcons = PROFILE_ICONS.filter(({ key }) => Boolean(profile[key]));
   return (
     <div className="w-full flex flex-col gap-3">
       {/*ユーザーアイコン*/}
@@ -115,7 +117,7 @@ export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
         {/*SNSやGitHubなどが未設定の場合*/}
         { activeIcons.length === 0 && (
           <p className="text-sm text-stone-400">編集ボタンからSNSなど追加しましょう。</p>
-        )}
+        )} 
       </div>
     </div>
   );

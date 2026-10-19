@@ -9,7 +9,7 @@ import { AuthModeProps } from "@/types/auth";
 import { FormInput } from "@/components/Input/formInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const SignInForm = ({mode}: AuthModeProps ) => {
+export const LogInForm = ({mode}: AuthModeProps ) => {
   const {
     register,
     handleSubmit,
