@@ -1,3 +1,5 @@
+"use client";
+
 import { Profile } from "@/types/profile.type";
 import { Button } from "@/components/Button/Button";
 import Image from "next/image";

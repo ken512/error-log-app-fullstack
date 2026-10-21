@@ -1,5 +1,6 @@
 import { ErrorLogListItem, ErrorLogDetail } from "./errorLog.type"
 import { PaginationData } from "@/utils/errorLogList/calculatePagination";
+import { Profile } from "./profile.type";
 import { ErrorLogSummary } from "./errorLog.type";
 
 export type ErrorLogListResponse = {
@@ -29,4 +30,15 @@ export type UpdateErrorLogResponse = {
 export type DeleteErrorLogResponse = {
   status: "OK",
   message: string;
+};
+
+export type UserProfileResponse = {
+  status: "OK";
+  user: Profile;
+};
+
+export type UpdateUserProfile = {
+  status: "OK",
+  message: string;
+  user: Profile;
 };
