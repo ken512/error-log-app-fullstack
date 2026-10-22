@@ -37,10 +37,10 @@ export const Navigation = ({ open, isLoggedIn}: Props) => {
 
             <li>
               <Link
-                href="/account"
+                href="/profile"
                 className="block py-2 text-base text-white hover:text-gray-300"
               >
-                マイページ
+                プロフィール
               </Link>
             </li>
           </>

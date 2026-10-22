@@ -6,7 +6,7 @@ export const PUT = async (req: NextRequest) => {
   try {
     const userId = await getCurrentUser();
     const body = await req.json();
-    const { userName, profileIcon, xUrl, threadsUrl, githubUrl } = body;
+    const { userName, profileIcon, xUrl, instagramUrl, threadsUrl, githubUrl } = body;
     // SETで、対象の行のみを更新
     const userData = await prisma.$executeRaw`
       UPDATE "User"
@@ -14,6 +14,7 @@ export const PUT = async (req: NextRequest) => {
         "userName" = ${userName ?? null},
         "profileIcon" = ${profileIcon ?? null},
         "xUrl" = ${xUrl ?? null},
+        "instagramUrl" = ${instagramUrl ?? null},
         "threadsUrl" = ${threadsUrl ?? null},
         "githubUrl" = ${githubUrl ?? null},
         "updated_at" = NOW()
