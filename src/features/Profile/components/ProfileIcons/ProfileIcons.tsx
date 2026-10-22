@@ -1,6 +1,6 @@
 "use client";
 
-import { Profile } from "@/types/profile.type";
+import { Profile } from "@/features/Profile/types/profile.type";
 import { Button } from "@/components/Button/Button";
 import Image from "next/image";
 
@@ -56,13 +56,14 @@ export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
   
   // PROFILE_ICONSの各SNSのURLが設定されているかを判定。
   const activeIcons = PROFILE_ICONS.filter(({ key }) => Boolean(profile[key]));
+
   return (
     <div className="w-full flex flex-col gap-3">
       {/*ユーザーアイコン*/}
       <div className="relative">
         <div className="h-28 bg-stone-200 rounded-t-2xl">
           {/**/}
-          <div className="absolute lest-1/2 -translate-x-1/2 -bottom-12">
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-12">
             <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-amber-100 shadow-sm">
               {profile.profileIcon ? (
                 <Image
@@ -92,7 +93,7 @@ export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
           </h1>
           <Button
             onClick={onEditClick}
-            className="text-xs font-medium border-none rounded-full bg-stone-100 hover:bg-stone-200 transition-colors"
+            className="text-md text-black font-bold border-none rounded-full bg-stone-300 hover:bg-stone-400 transition-colors"
           >
             編集
           </Button>
@@ -118,7 +119,7 @@ export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
 
         {/*SNSやGitHubなどが未設定の場合*/}
         { activeIcons.length === 0 && (
-          <p className="text-sm text-stone-400">編集ボタンからSNSなど追加しましょう。</p>
+          <p className="text-md font-bold text-stone-600">編集ボタンからSNSなど追加しましょう。</p>
         )} 
       </div>
     </div>

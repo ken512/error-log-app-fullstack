@@ -3,7 +3,7 @@
 import { ProfileView } from "./ProfileIcons/ProfileIcons";
 import { ProfileEditForm } from "./ProfileEditForm/ProfileEditForm";
 import Link from "next/link";
-import { Profile } from "@/types/profile.type";
+import { Profile } from "@/features/Profile/types/profile.type";
 import { UserProfileResponse } from "@/types/api-response";
 import { UpdateUserProfile } from "@/types/api-response";
 import { useGetFetcher } from "@/hooks/useFetch";
@@ -34,7 +34,6 @@ export const UserProfile = () => {
     ["user"],
     `/public/profile`,
   );
-console.log("プロフィールAPIレスポンス:", userProfile);
   const { reset } = methods;
 
   useEffect(() => {

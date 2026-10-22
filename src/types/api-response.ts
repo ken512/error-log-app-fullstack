@@ -1,6 +1,6 @@
 import { ErrorLogListItem, ErrorLogDetail } from "./errorLog.type"
 import { PaginationData } from "@/utils/errorLogList/calculatePagination";
-import { Profile } from "./profile.type";
+import { Profile } from "../features/Profile/types/profile.type";
 import { ErrorLogSummary } from "./errorLog.type";
 
 export type ErrorLogListResponse = {
