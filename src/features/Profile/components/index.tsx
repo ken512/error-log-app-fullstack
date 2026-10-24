@@ -8,16 +8,19 @@ import { UserProfileResponse } from "@/types/api-response";
 import { UpdateUserProfile } from "@/types/api-response";
 import { useGetFetcher } from "@/hooks/useFetch";
 import { profileModeAtom } from "@/stores/profileActionsAtoms";
-import { useAtom} from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { usePut } from "@/hooks/useFetch";
 import { FormProvider, useForm } from "react-hook-form";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { Dialog } from "@/components/Dialog";
+import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
 
 export const UserProfile = () => {
   const [mode, setMode] = useAtom(profileModeAtom);
   const queryClient = useQueryClient();
+  const dispatch = useSetAtom(dialogActionsAtom);
 
   const methods = useForm<Profile>({
     defaultValues: {
@@ -63,6 +66,10 @@ export const UserProfile = () => {
     return <p>データがありません。</p>;
   }
 
+  const handleOpenUpdateDialog = () => {
+    dispatch("open");
+  }
+
   const handleStartEdit = () => {
     setMode("Edit");
   };
@@ -76,8 +83,9 @@ export const UserProfile = () => {
     upDateProfile(profileValue, {
       onSuccess: (response) => {
         toast.success(response.message);
+        dispatch("close");
         setMode("View");
-        queryClient.invalidateQueries({ queryKey: ["profile"] });
+        queryClient.invalidateQueries({ queryKey: ["user"] });
       },
       onError: () => {
         toast.error("プロフィールの更新に失敗しました。");
@@ -87,6 +95,7 @@ export const UserProfile = () => {
 
   return (
     <FormProvider {...methods}>
+      <Toaster position="top-center" />
       <form onSubmit={methods.handleSubmit(handleSave)}>
         <div className="mx-auto flex max-w-[800px] flex-col gap-10">
           <Link href="/errorLogList">
@@ -98,10 +107,15 @@ export const UserProfile = () => {
               onEditClick={handleStartEdit}
             />
           ) : (
-            <ProfileEditForm onCancel={handleCancel} isUpdating={isUpdating}/>
+            <ProfileEditForm onCancel={handleCancel} onOpenUpdateDialog={handleOpenUpdateDialog} isUpdating={isUpdating} />
           )}
         </div>
       </form>
+      <Dialog
+        onConfirm={methods.handleSubmit(handleSave)}
+        actions="update"
+        isPending={isUpdating}
+      />
     </FormProvider>
   );
 };

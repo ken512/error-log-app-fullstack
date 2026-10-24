@@ -7,10 +7,11 @@ import { useFormContext } from "react-hook-form";
 
 type props = {
   onCancel: () => void;
+  onOpenUpdateDialog: () => void;
   isUpdating: boolean;
 };
 
-export const ProfileEditForm = ({ onCancel, isUpdating }: props) => {
+export const ProfileEditForm = ({ onCancel, onOpenUpdateDialog, isUpdating }: props) => {
   const { register } = useFormContext<Profile>();
 
   return (
@@ -39,6 +40,8 @@ export const ProfileEditForm = ({ onCancel, isUpdating }: props) => {
         <Button
           className="border border-[#1e90ff] text-[#1e90ff] font-bold px-3 py-3"
           disabled={isUpdating}
+          onClick={onOpenUpdateDialog}
+          type="button"
         >
           {isUpdating ? "保存中..." : "保存する"}
         </Button>
