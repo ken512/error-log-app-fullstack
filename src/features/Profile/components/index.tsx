@@ -16,6 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Dialog } from "@/components/Dialog";
 import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
+import { DIALOG_PROFILE_CONFIG } from "@/utils/dialogConfig";
 
 export const UserProfile = () => {
   const [mode, setMode] = useAtom(profileModeAtom);
@@ -34,9 +35,11 @@ export const UserProfile = () => {
   });
 
   const { data: userProfile, error } = useGetFetcher<UserProfileResponse>(
-    ["user"],
+    ["profile"],
     `/public/profile`,
   );
+  console.log("プロフィールデータ: ", userProfile);
+
   const { reset } = methods;
 
   useEffect(() => {
@@ -85,13 +88,14 @@ export const UserProfile = () => {
         toast.success(response.message);
         dispatch("close");
         setMode("View");
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        queryClient.invalidateQueries({ queryKey: ["profile"] });
       },
       onError: () => {
         toast.error("プロフィールの更新に失敗しました。");
       },
     });
   };
+    console.log("プロフィールデータ更新: ", upDateProfile);
 
   return (
     <FormProvider {...methods}>
@@ -113,7 +117,7 @@ export const UserProfile = () => {
       </form>
       <Dialog
         onConfirm={methods.handleSubmit(handleSave)}
-        actions="update"
+        config={DIALOG_PROFILE_CONFIG.update}
         isPending={isUpdating}
       />
     </FormProvider>
