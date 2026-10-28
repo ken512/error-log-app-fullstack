@@ -111,7 +111,7 @@ export const UserProfile = () => {
               onEditClick={handleStartEdit}
             />
           ) : (
-            <ProfileEditForm onCancel={handleCancel} onOpenUpdateDialog={handleOpenUpdateDialog} isUpdating={isUpdating} />
+            <ProfileEditForm onCancel={handleCancel} onOpenUpdateDialog={handleOpenUpdateDialog} isUpdating={isUpdating} profile={userProfile.user} />
           )}
         </div>
       </form>

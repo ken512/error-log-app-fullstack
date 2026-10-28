@@ -64,7 +64,7 @@ export const ProfileView = ({ profile, onEditClick }: ProfileView) => {
         <div className="h-28 bg-stone-200 rounded-t-2xl">
           {/**/}
           <div className="absolute left-1/2 -translate-x-1/2 -bottom-12">
-            <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-amber-100 shadow-sm">
+            <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-sm">
               {profile.profileIcon ? (
                 <Image
                   src={profile.profileIcon}
