@@ -23,6 +23,7 @@ export const ProfileEditForm = ({
 
   return (
     <div className="border-none rounded-2xl px-5 py-5 my-8 bg-[#333333] text-left">
+      <h1 className="font-bold text-2xl">プロフィール編集</h1>
       <div className="flex justify-center">
       <div className="w-24 h-24 text-center rounded-full border-4border-white overflow-hidden bg-amber-100 shadow-sm">
         {profile.profileIcon ? (
@@ -54,7 +55,7 @@ export const ProfileEditForm = ({
           />
         </div>
       ))}
-      <div className="flex justify-center gap-10 my-5">
+      <div className="flex justify-center gap-10 mt-10">
         <Button
           className="border border-[#ff6666] text-[#ff6666] font-bold px-3 py-3"
           disabled={isUpdating}
