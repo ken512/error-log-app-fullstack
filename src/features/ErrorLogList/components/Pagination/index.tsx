@@ -1,7 +1,7 @@
 "use client";
 
-import type { PaginationData } from "@/utils/ErrorLogList/calculatePagination";
-import { generatePageNumber } from "@/utils/ErrorLogList/generatePageNumbers";
+import type { PaginationData } from "@/utils/errorLogList/calculatePagination";
+import { generatePageNumber } from "@/utils/errorLogList/generatePageNumbers";
 
 type PaginationProps = {
   pagination: PaginationData;

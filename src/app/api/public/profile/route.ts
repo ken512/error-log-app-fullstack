@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { User } from "@/generated/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -11,6 +11,7 @@ export const GET = async () => {
     const userData = await prisma.$queryRaw<User[]>`SELECT "id", "userName",
         "profileIcon",
         "xUrl",
+        "instagramUrl",
         "threadsUrl",
         "githubUrl"
         FROM "User"
@@ -32,6 +33,7 @@ export const GET = async () => {
         userName: user.userName,
         profileIcon: user.profileIcon,
         xUrl: user.xUrl,
+        instagramUrl: user.instagramUrl,
         threadsUrl: user.threadsUrl,
         githubUrl: user.githubUrl,
       },

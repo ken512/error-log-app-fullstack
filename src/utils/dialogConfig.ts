@@ -4,14 +4,14 @@ export type DialogActions = "create" | "update" | "delete";
 
 // ダイアログの処理を共通化
 
-type DialogConfig = {
+export type DialogConfig = {
   title: string;
   description: string;
   confirmLabel: string;
 };
 
 // 処理ごとの表示設定
-export const DIALOG_CONFIG: Record<DialogActions, DialogConfig> = {
+export const DIALOG_ERRORLOG_CONFIG: Record<DialogActions, DialogConfig> = {
   create: {
     title: "エラーログを投稿しますか？",
     description: "入力した内容で新しく登録します。",
@@ -29,4 +29,15 @@ export const DIALOG_CONFIG: Record<DialogActions, DialogConfig> = {
     description: "削除したデータは元に戻せません。",
     confirmLabel: "削除する",
   }, 
+}
+
+type ProfileUpdateConfig = Extract<DialogActions, "update">
+
+export const DIALOG_PROFILE_CONFIG : Record<ProfileUpdateConfig, DialogConfig> = {
+
+  update: {
+    title: "変更内容を保存しますか？",
+    description: "プロフィールを編集内容で更新されます。",
+    confirmLabel: "保存する",
+  },
 }

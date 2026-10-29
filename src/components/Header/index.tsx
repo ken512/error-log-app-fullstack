@@ -23,7 +23,7 @@ export const Header = async () => {
         <nav className="hidden md:block mx-10 font-bold">
           <Link href="/errorLogList" className="hover:text-gray-300 px-5">エラーログ一覧</Link>
           <Link href="/new-errorlog" className="hover:text-gray-300 px-5">新規投稿</Link>
-          <Link href="#" className="hover:text-gray-300 px-5">マイページ</Link>
+          <Link href="/profile" className="hover:text-gray-300 px-5">プロフィール</Link>
         </nav>
       </div>
       <HeaderAuth />

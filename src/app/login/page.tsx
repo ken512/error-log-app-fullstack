@@ -1,9 +1,9 @@
-import { SignInForm } from "@/features/auth/Login/Login-form";
+import { LogInForm } from "@/features/auth/Login/Login-form";
 
 const LoginPage = () => {
   return (
     <div className="mt-[50px] max-w-[450px] mx-auto">
-      <SignInForm mode="login" />
+      <LogInForm mode="login" />
     </div>
   );
 };

@@ -21,6 +21,7 @@ import { Dialog } from "@/components/Dialog";
 import { useEffect, useState } from "react";
 import { useSetAtom } from "jotai";
 import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
+import { DIALOG_ERRORLOG_CONFIG } from "@/utils/dialogConfig";
 
 type Props = {
   errorLogId: string;
@@ -164,7 +165,7 @@ export const ErrorLogDetail = ({ errorLogId }: Props) => {
       </form>
       <Dialog
         onConfirm={isEditing ? methods.handleSubmit(handleEdit) : handleDelete}
-        actions={isEditing ? "update" : "delete"}
+        config={isEditing ? DIALOG_ERRORLOG_CONFIG.update : DIALOG_ERRORLOG_CONFIG.delete}
         isPending={isEditing ? isUpdating : isDeleting}
       />
     </FormProvider> 

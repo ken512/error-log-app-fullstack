@@ -1,6 +1,5 @@
 import { ErrorLogDetail } from "@/types/errorLog.type";
 import { useFormContext } from "react-hook-form";
-import { Dialog } from "@/components/Dialog";
 import { ErrorLogFormValues } from "@/features/ErrorLog-NewPosts/types/errorLogForm";
 
 type ErrorLogDetailsSectionProps = {

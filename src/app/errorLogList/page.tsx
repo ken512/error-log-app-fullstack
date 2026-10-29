@@ -4,7 +4,7 @@ import { ErrorLogList } from "@/features/ErrorLogList";
 import { SearchInput } from "@/features/ErrorLogList/components/SearchInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchKeywordAtom } from "@/features/ErrorLogList/components/SearchInput";
-import { buildErrorLogListPath } from "@/utils/ErrorLogList/buildErrorLogListPath";
+import { buildErrorLogListPath } from "@/utils/errorLogList/buildErrorLogListPath";
 import { ErrorLogListResponse } from "@/types/api-response";
 import { useGetFetcher } from "@/hooks/useFetch";
 import { useAtom, useAtomValue } from "jotai";

@@ -1,21 +1,21 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import { DialogActions } from "@/utils/dialogConfig";
-import { DIALOG_CONFIG } from "@/utils/dialogConfig";
+import { DialogConfig } from "@/utils/dialogConfig";
 import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
 import { dialogOpenAtom } from "@/stores/dialogActionsAtom";
 import { Button } from "../Button/Button";
 
 type DialogProps = {
-  actions: DialogActions;
+  config: DialogConfig;
   isPending?: boolean;
   onConfirm: () => void | Promise<void | undefined>;
 };
 
-export const Dialog = ({ actions, isPending, onConfirm }: DialogProps) => {
+export const Dialog = ({ config, isPending, onConfirm }: DialogProps) => {
   // ダイアログを開く時の状態管理。
   const isOpen = useAtomValue(dialogOpenAtom);
 
-  const config = DIALOG_CONFIG[actions];
+
 
   // ダイアログのアクションごとの状態管理
   const dispatch = useSetAtom(dialogActionsAtom);

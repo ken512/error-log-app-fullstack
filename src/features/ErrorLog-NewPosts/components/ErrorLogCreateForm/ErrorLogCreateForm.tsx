@@ -13,6 +13,7 @@ import { Dialog } from "@/components/Dialog";
 import { useSetAtom } from "jotai";
 import { dialogActionsAtom } from "@/stores/dialogActionsAtom";
 import toast, { Toaster } from "react-hot-toast";
+import { DIALOG_ERRORLOG_CONFIG } from "@/utils/dialogConfig";
 
 export const ErrorLogNewCreateForm = () => {
   const methods = useForm<ErrorLogFormValues>({
@@ -73,7 +74,7 @@ export const ErrorLogNewCreateForm = () => {
         </div>
         {error && <p className="text-red-500">投稿に失敗</p>}
       </form>
-      <Dialog onConfirm={methods.handleSubmit(onSubmit)} actions="create" />
+      <Dialog onConfirm={methods.handleSubmit(onSubmit)} config={DIALOG_ERRORLOG_CONFIG.create} />
     </FormProvider>
   );
 };
